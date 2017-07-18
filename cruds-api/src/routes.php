@@ -13,7 +13,7 @@ function moveUploadedFile($directory, $uploadedFile)
     return $filename;
 }
 
-include 'routes/crud1_routes.php';
+include 'routes/textos_routes.php';
 include 'routes/crud2_routes.php';
 include 'routes/crud3_routes.php';
 include 'routes/crud4_routes.php';
