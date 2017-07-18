@@ -27,8 +27,7 @@ $app->put('/textos/{id}', function ($request, $response, $args) {
     $title = $parsedBody['title'];
     $description = $parsedBody['description'];
     $text = $parsedBody['text'];
-    $files = $request->getUploadedFiles();
-    $image = $files['image'];
+
 
     $errors = null;
 
@@ -59,6 +58,12 @@ $app->put('/textos/{id}', function ($request, $response, $args) {
         $texto->description = $description;
     }
 
+
+    $image = null;
+    $files = $request->getUploadedFiles();
+    if (is_array($files)) {
+        $image = $files['image'];
+    }
     if (is_object($image)) {
         $directory = $this->get('settings')['upload_dir'];
         $filename = moveUploadedFile($directory, $image);
