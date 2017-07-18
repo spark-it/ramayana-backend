@@ -141,3 +141,11 @@ $app->post('/textos', function ($request, $response, $args) {
         return $response->withJson($result, 201);
     }
 });
+
+$app->delete('/textos/{id}', function ($request, $response, $args) {
+    if(Texto::destroy($args['id'])){
+        return $response->getBody()->write('',200);
+    } else {
+        return $response->getBody()->write('Parâmetro não enviado',400);
+    }
+});
