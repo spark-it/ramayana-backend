@@ -8,7 +8,7 @@ $capsule = new Capsule;
 $capsule->addConnection([
     'driver' => 'mysql',
     'host' => 'localhost',
-    'database' => 'cruds_api',
+    'database' => 'ramayana',
     'username' => 'root',
     'password' => 'senha',
     'charset' => 'utf8',
