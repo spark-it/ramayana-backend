@@ -86,8 +86,8 @@ $app->post('/aulas', function ($request, $response, $args) {
             'image' => $image
         ));
 
-//        $base_url = $this->get('settings')['base_url'];
-//        $result->image = $base_url . '/uploads/' . $result->image;
+        $base_url = $this->get('settings')['base_url'];
+        $result->image = $base_url . '/uploads/' . $result->image;
         return $response->withJson($result, 201);
     }
 });
@@ -98,10 +98,6 @@ $app->put('/aulas/{id}', function ($request, $response, $args) {
     if (is_null($aula)) {
         return $response->withJson(null, 200);
     }
-
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-
 
     $title = null;
     $text = null;
