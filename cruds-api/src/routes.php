@@ -15,7 +15,7 @@ function moveUploadedFile($directory, $uploadedFile)
 
 include 'routes/textos_routes.php';
 include 'routes/aulas_routes.php';
-include 'routes/crud3_routes.php';
+include 'routes/informes_routes.php';
 include 'routes/crud4_routes.php';
 include 'routes/crud5_routes.php';
 
