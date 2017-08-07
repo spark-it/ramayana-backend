@@ -1,6 +1,12 @@
 <?php
 // Routes
+use Slim\Views\PhpRenderer;
+use Facebook\Facebook;
+use Facebook\Exceptions\FacebookResponseException;
+use Facebook\Exceptions\FacebookSDKException;
 
+
+include __DIR__ . '/models/Usuario.php';
 
 function moveUploadedFile($directory, $uploadedFile)
 {
@@ -12,6 +18,64 @@ function moveUploadedFile($directory, $uploadedFile)
 
     return $filename;
 }
+
+$container = $app->getContainer();
+$container['renderer'] = new PhpRenderer("../templates");
+
+$settings = $container->get('settings');
+
+define("BASE_URL", $settings['base_url']);
+
+function check_logged(){
+    if (!isset($_SESSION['user']) || is_null($_SESSION['user'])) {
+        header('Location: ' . BASE_URL . '/');
+    }
+}
+
+
+$app->get('/', function ($request, $response, $args) {
+    $this->renderer->render($response, "/login.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/foot.phtml", $args);
+});
+
+
+$app->get('/user_logout', function ($request, $response, $args) {
+    unset($_SESSION['user']);
+    header('Location: '. BASE_URL . '/');
+});
+$app->get('/user_login/{access_token}', function ($request, $response, $args) {
+
+    $access_token = $args['access_token'];
+
+
+    $fb = new Facebook([
+        'app_id' => '1546114922113473',
+        'app_secret' => '99485e0d80b47066811e201f4102450c',
+        'default_graph_version' => 'v2.7',
+    ]);
+
+    try {
+        // Returns a `Facebook\FacebookResponse` object
+        $response = $fb->get('/me?fields=id,first_name,last_name', $access_token);
+        $user = $response->getGraphUser();
+        $user = Usuario::create([
+            'first_name' => $user['first_name'],
+            'last_name' => $user['last_name'],
+            'facebook_id' => $user['id']
+        ]);
+
+        $_SESSION['user'] = $user;
+        header('Location: '. BASE_URL . '/forms/textos/list');
+
+    } catch (FacebookResponseException $e) {
+        echo 'Graph returned an error: ' . $e->getMessage();
+        exit;
+    } catch (FacebookSDKException $e) {
+        echo 'Facebook SDK returned an error: ' . $e->getMessage();
+        exit;
+    }
+});
+
 
 include 'routes/textos_routes.php';
 include 'routes/aulas_routes.php';

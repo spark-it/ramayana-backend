@@ -1,0 +1,40 @@
+<h1>Cadastrar Sítios</h1>
+
+<h3>
+    <a href="<?php echo $base_url ?>/forms/sitios/list">Voltar</a>
+</h3>
+
+<form action="<?php echo $base_url?>/sitios" method="POST" id="postForm" enctype="multipart/form-data">
+<input type="hidden" name="fromForm" value="true">
+
+
+    <div class="form-group">
+        <label for="title">Título:</label>
+        <input type="text" class="form-control" name="title" id="titulo">
+    </div>
+    <div class="form-group">
+        <label for="description">Descrição:</label>
+        <input type="text" class="form-control" name="description" id="description">
+    </div>
+    <div class="form-group">
+        <label for="text">Texto:</label> <br/>
+        <textarea class="form-control" rows="5" id="text" name="text"></textarea>
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="image">Selecione uma imagem:</label> <br/>
+        <input type="file" accept="image/png, image/jpeg, image/gif" name="image" id="image"/> <!-- rename it -->
+    </div>
+
+
+
+
+
+
+
+    <button type="submit" id="submit" class="btn btn-default">Cadastrar</button>
+</form>
+<script>
+</script>

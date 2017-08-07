@@ -6,6 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit195b72ecb14216c43dd12cef198ac242
 {
+    public static $files = array (
+        'c65d09b6820da036953a371c8c73a9b1' => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook/polyfills.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
@@ -15,7 +19,12 @@ class ComposerStaticInit195b72ecb14216c43dd12cef198ac242
         ),
         'P' => 
         array (
+            'Psr\\Container\\' => 14,
             'PDepend\\' => 8,
+        ),
+        'F' => 
+        array (
+            'Facebook\\' => 9,
         ),
     );
 
@@ -32,9 +41,17 @@ class ComposerStaticInit195b72ecb14216c43dd12cef198ac242
         array (
             0 => __DIR__ . '/..' . '/symfony/config',
         ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
         'PDepend\\' => 
         array (
             0 => __DIR__ . '/..' . '/pdepend/pdepend/src/main/php/PDepend',
+        ),
+        'Facebook\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook',
         ),
     );
 

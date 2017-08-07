@@ -1,4 +1,13 @@
 <?php
+
+$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$base = 'http://cruds-api.dev:8888';
+if (!strpos($actual_link,'dev')) {
+    $base = 'http://mayckxavier.com/projetos/ramayana-backend/public';
+}
+
+
+
 return [
     'settings' => [
         'displayErrorDetails' => true, // set to false in production
@@ -16,7 +25,7 @@ return [
             'level' => \Monolog\Logger::DEBUG,
         ],
 
-        'base_url' => 'http://cruds-api.dev:8888/',
+        'base_url' => $base,
         'upload_dir' => __DIR__ . '/../public/uploads',
     ],
 ];

@@ -5,7 +5,11 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 $capsule = new Capsule;
 
-$capsule->addConnection([
+
+
+$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+$settings = array(
     'driver' => 'mysql',
     'host' => 'localhost',
     'database' => 'ramayana',
@@ -14,7 +18,24 @@ $capsule->addConnection([
     'charset' => 'utf8',
     'collation' => 'utf8_unicode_ci',
     'prefix' => '',
-]);
+);
+
+
+if (!strpos($actual_link,'dev')) {
+    // Database information
+    $settings = array(
+        'driver' => 'mysql',
+        'host' => 'mysql.mayckxavier.com',
+        'database' => 'freela_ramayana',
+        'username' => 'mayckxavier',
+        'password' => 'penajaca123',
+        'charset' => 'utf8',
+        'collation' => 'utf8_unicode_ci',
+        'prefix' => '',
+    );
+}
+
+$capsule->addConnection($settings);
 
 // Set the event dispatcher used by Eloquent models... (optional)
 //use Illuminate\Events\Dispatcher;

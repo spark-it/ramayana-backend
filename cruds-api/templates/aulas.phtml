@@ -1,0 +1,47 @@
+
+    <h1>Aulas</h1>
+
+    <form action="/" id="postForm">
+        <div class="form-group">
+            <label for="title">Título:</label>
+            <input type="text" class="form-control" id="titulo">
+        </div>
+        <div class="form-group">
+            <label for="description">Descrição:</label>
+            <input type="text" class="form-control" id="description">
+        </div>
+        <div class="form-group">
+            <label for="text">Texto:</label> <br />
+            <textarea class="form-control" rows="5" id="text" name="text"></textarea>
+        </div>
+
+
+        <div class="checkbox">
+            <label><input type="checkbox"> Remember me</label>
+        </div>
+        <button type="submit" id="submit" class="btn btn-default">Cadastrar</button>
+    </form>
+    <script>
+        var apiUrl = "http://mayckxavier.com/projetos/ramayana-backend/public/aulas";
+        $("#postForm").submit(function (event) {
+            event.preventDefault();
+
+            var title = $("title").val();
+            var description = $("description").val();
+            var text = $("text").val();
+
+            $.ajax({
+                type: "POST",
+                url: apiUrl,
+                data: {
+                    title: title,
+                    description: description,
+                    text: text
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+    </script>
