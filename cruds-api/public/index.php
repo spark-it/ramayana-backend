@@ -1,8 +1,9 @@
 <?php
+
 if (PHP_SAPI == 'cli-server') {
     // To help the built-in PHP dev server, check if the request was actually for
     // something which should probably be served as a static file
-    $url  = parse_url($_SERVER['REQUEST_URI']);
+    $url = parse_url($_SERVER['REQUEST_URI']);
     $file = __DIR__ . $url['path'];
     if (is_file($file)) {
         return false;
@@ -17,26 +18,11 @@ session_start();
 $settings = require __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);
 
-// Database information
-$settings = array(
-    'driver' => 'mysql',
-    'host' => 'localhost',
-    'database' => 'ramayana',
-    'username' => 'root',
-    'password' => 'senha',
-    'charset' => 'utf8',
-    'collation' => 'utf8_unicode_ci',
-    'prefix' => '',
-);
-
-
-// $app->get('/', function () use ($app) {
-//     $users = \User::all();
-//     echo $users->toJson();
-// });
 
 // Set up dependencies
 require __DIR__ . '/../src/dependencies.php';
+
+use Slim\Views\PhpRenderer;
 
 
 //$container = new Illuminate\Container\Container;
