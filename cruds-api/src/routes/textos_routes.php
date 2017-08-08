@@ -5,7 +5,7 @@ include __DIR__ . '/../models/Texto.php';
 
 
 $app->get('/forms/textos/list', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
 
     $rows = Texto::all();
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
@@ -14,7 +14,7 @@ $app->get('/forms/textos/list', function ($request, $response, $args) {
 });
 
 $app->get('/forms/textos/create', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
     $this->renderer->render($response, "/textos/create.phtml", ['base_url' => BASE_URL]);
     $this->renderer->render($response, "/foot.phtml", $args);
@@ -22,7 +22,7 @@ $app->get('/forms/textos/create', function ($request, $response, $args) {
 
 
 $app->get('/forms/textos/edit/{id}', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
     $rows = Texto::find($args['id']);
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);

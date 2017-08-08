@@ -182,7 +182,7 @@ $app->delete('/sobre/{id}', function ($request, $response, $args) {
 //Forms
 
 $app->get('/forms/sobre/list', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
     $rows = Sobre::all();
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
@@ -191,7 +191,7 @@ $app->get('/forms/sobre/list', function ($request, $response, $args) {
 });
 
 $app->get('/forms/sobre/create', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
     $this->renderer->render($response, "/sobre/create.phtml", ['base_url' => BASE_URL]);
@@ -199,7 +199,7 @@ $app->get('/forms/sobre/create', function ($request, $response, $args) {
 });
 
 $app->get('/forms/sobre/edit/{id}', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
     $rows = Sobre::find($args['id']);
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);

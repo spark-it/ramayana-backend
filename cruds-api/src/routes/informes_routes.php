@@ -187,7 +187,7 @@ $app->delete('/informes/{id}', function ($request, $response, $args) {
 //Forms
 
 $app->get('/forms/informes/list', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
     $rows = Informe::all();
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
@@ -196,7 +196,7 @@ $app->get('/forms/informes/list', function ($request, $response, $args) {
 });
 
 $app->get('/forms/informes/create', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
     $this->renderer->render($response, "/informes/create.phtml", ['base_url' => BASE_URL]);
@@ -204,7 +204,7 @@ $app->get('/forms/informes/create', function ($request, $response, $args) {
 });
 
 $app->get('/forms/informes/edit/{id}', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
     $rows = Informe::find($args['id']);
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);

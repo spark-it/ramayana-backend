@@ -5,7 +5,7 @@ include __DIR__ . '/../models/Aula.php';
 
 
 $app->get('/forms/aulas/list', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
     $rows = Aula::all();
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
@@ -14,7 +14,7 @@ $app->get('/forms/aulas/list', function ($request, $response, $args) {
 });
 
 $app->get('/forms/aulas/create', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
     $this->renderer->render($response, "/aulas/create.phtml", ['base_url' => BASE_URL]);
@@ -22,7 +22,7 @@ $app->get('/forms/aulas/create', function ($request, $response, $args) {
 });
 
 $app->get('/forms/aulas/edit/{id}', function ($request, $response, $args) {
-    check_logged();
+    check_logged($response);
 
     $rows = Aula::find($args['id']);
 
