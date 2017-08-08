@@ -26,25 +26,49 @@ $settings = $container->get('settings');
 
 define("BASE_URL", $settings['base_url']);
 
-function check_logged(){
-    if (!isset($_SESSION['user']) || is_null($_SESSION['user'])) {
+function check_logged($response)
+{
+    if (!isset($_SESSION['is_logged'])
+        || is_null($_SESSION['is_logged'])
+        || $_SESSION['is_logged'] != true
+    ) {
         header('Location: ' . BASE_URL . '/');
+        return $response->withRedirect(BASE_URL);
     }
 }
 
 
 $app->get('/', function ($request, $response, $args) {
     $this->renderer->render($response, "/login.phtml", ['base_url' => BASE_URL]);
-    $this->renderer->render($response, "/foot.phtml", $args);
 });
 
 
 $app->get('/user_logout', function ($request, $response, $args) {
-    unset($_SESSION['user']);
-    header('Location: '. BASE_URL . '/');
+    unset($_SESSION['is_logged']);
+    return $response->withRedirect(BASE_URL);
 });
-$app->get('/user_login/{access_token}', function ($request, $response, $args) {
 
+
+$app->post('/user_login', function ($request, $response, $args) {
+    $parsedBody = $request->getParsedBody();
+
+    $email = $parsedBody['email'];
+    $senha = $parsedBody['senha'];
+
+    if ($email == 'admin@ramayana.com' &&
+        $senha == 'rama'
+    ) {
+        $_SESSION['is_logged'] = true;
+
+
+        return $response->withRedirect(BASE_URL . '/forms/textos/list');
+    } else {
+        return $response->withRedirect(BASE_URL);
+    }
+});
+
+
+$app->get('/user_login/{access_token}', function ($request, $response, $args) {
     $access_token = $args['access_token'];
 
 
@@ -65,7 +89,7 @@ $app->get('/user_login/{access_token}', function ($request, $response, $args) {
         ]);
 
         $_SESSION['user'] = $user;
-        header('Location: '. BASE_URL . '/forms/textos/list');
+        header('Location: ' . BASE_URL . '/forms/textos/list');
 
     } catch (FacebookResponseException $e) {
         echo 'Graph returned an error: ' . $e->getMessage();
@@ -81,6 +105,7 @@ include 'routes/textos_routes.php';
 include 'routes/aulas_routes.php';
 include 'routes/informes_routes.php';
 include 'routes/sitios_routes.php';
+include 'routes/videos_routes.php';
 include 'routes/sobre_routes.php';
 
 
