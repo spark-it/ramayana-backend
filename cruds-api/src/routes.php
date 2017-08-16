@@ -55,8 +55,8 @@ $app->post('/user_login', function ($request, $response, $args) {
     $email = $parsedBody['email'];
     $senha = $parsedBody['senha'];
 
-    if ($email == 'admin@ramayana.com' &&
-        $senha == 'rama'
+    if ($email == 'professorramayana@gmail.com' &&
+        $senha == 'adminramayana'
     ) {
         $_SESSION['is_logged'] = true;
 
@@ -107,5 +107,6 @@ include 'routes/informes_routes.php';
 include 'routes/sitios_routes.php';
 include 'routes/videos_routes.php';
 include 'routes/sobre_routes.php';
+include 'routes/user_routes.php';
 
 
