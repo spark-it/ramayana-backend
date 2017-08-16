@@ -25,6 +25,12 @@ $app->get('/forms/videos/edit/{id}', function ($request, $response, $args) {
     check_logged($response);
     $rows = Video::find($args['id']);
 
+    $subject = $rows->video_link;
+    $url = parse_url($subject);
+    parse_str($url['query'], $query);
+    $rows->video_id = $query['v'];
+
+
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
     $this->renderer->render($response, "/videos/edit.phtml", ['row' => $rows, 'base_url' => BASE_URL]);
     $this->renderer->render($response, "/foot.phtml", $args);
