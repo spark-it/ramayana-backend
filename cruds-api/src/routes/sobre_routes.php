@@ -282,3 +282,15 @@ $app->post('/sobre/edit/{id}', function ($request, $response, $args) {
         }
     }
 });
+
+$app->post('/forms/sobre/delete', function ($request, $response, $args) {
+    $parsedBody = $request->getParsedBody();
+    $id = $parsedBody['id'];
+
+
+    if (Sobre::destroy($id)) {
+        return $response->withRedirect(BASE_URL . '/forms/sobre/list');
+    } else {
+        return $response->getBody()->write('Parâmetro não enviado', 400);
+    }
+});

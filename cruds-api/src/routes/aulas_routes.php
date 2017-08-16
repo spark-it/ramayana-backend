@@ -293,3 +293,15 @@ $app->delete('/aulas/{id}', function ($request, $response, $args) {
         return $response->getBody()->write('Parâmetro não enviado', 400);
     }
 });
+
+$app->post('/forms/aulas/delete', function ($request, $response, $args) {
+    $parsedBody = $request->getParsedBody();
+    $id = $parsedBody['id'];
+
+
+    if (Aula::destroy($id)) {
+        return $response->withRedirect(BASE_URL . '/forms/aulas/list');
+    } else {
+        return $response->getBody()->write('Parâmetro não enviado', 400);
+    }
+});

@@ -288,3 +288,15 @@ $app->post('/informes/edit/{id}', function ($request, $response, $args) {
     }
 });
 
+$app->post('/forms/informes/delete', function ($request, $response, $args) {
+    $parsedBody = $request->getParsedBody();
+    $id = $parsedBody['id'];
+
+
+    if (Informe::destroy($id)) {
+        return $response->withRedirect(BASE_URL . '/forms/informes/list');
+    } else {
+        return $response->getBody()->write('Parâmetro não enviado', 400);
+    }
+});
+

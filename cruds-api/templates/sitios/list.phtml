@@ -9,6 +9,7 @@
         <th>Título</th>
         <th>Texto</th>
         <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -17,7 +18,14 @@
             <td><?php echo $row->title ?></td>
             <td><?php echo $row->text ?></td>
             <td>
-                <a href="<?php echo $base_url?>/forms/sitios/edit/<?php echo $row->id?>">Editar</a>
+                <a class="btn btn-link" href="<?php echo $base_url?>/forms/sitios/edit/<?php echo $row->id?>">Editar</a>
+            </td>
+            <td>
+                <form action="<?php echo $base_url ?>/forms/sitios/delete" method="POST"
+                      id="postForm" enctype="multipart/form-data" onsubmit="return confirmDelete()">
+                    <input type="hidden" name="id" value="<?php echo $row->id ?>"/>
+                    <input type="submit" class="btn btn-link" value="Excluir"/>
+                </form>
             </td>
         </tr>
     <?php endforeach; ?>

@@ -265,6 +265,19 @@ $app->post('/textos/edit/{id}', function ($request, $response, $args) {
     }
 });
 
+$app->post('/forms/textos/delete', function ($request, $response, $args) {
+    $parsedBody = $request->getParsedBody();
+    $id = $parsedBody['id'];
+
+
+    if (Texto::destroy($id)) {
+        return $response->withRedirect(BASE_URL . '/forms/textos/list');
+    } else {
+        return $response->getBody()->write('Parâmetro não enviado', 400);
+    }
+});
+
+
 $app->delete('/textos/{id}', function ($request, $response, $args) {
     if (Texto::destroy($args['id'])) {
         return $response->getBody()->write('', 200);

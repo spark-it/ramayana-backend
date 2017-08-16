@@ -257,13 +257,24 @@ $app->post('/videos/edit/{id}', function ($request, $response, $args) {
         $video->save();
 
 
-
-
         if ($fromForm) {
             return $response->withRedirect(BASE_URL . '/forms/videos/list');
         } else {
             return $response->withJson($video, 201);
         }
+    }
+});
+
+
+$app->post('/forms/videos/delete', function ($request, $response, $args) {
+    $parsedBody = $request->getParsedBody();
+    $id = $parsedBody['id'];
+
+
+    if (Video::destroy($id)) {
+        return $response->withRedirect(BASE_URL . '/forms/videos/list');
+    } else {
+        return $response->getBody()->write('Parâmetro não enviado', 400);
     }
 });
 

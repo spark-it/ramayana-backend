@@ -10,6 +10,7 @@
         <th>Texto</th>
         <th>Vídeo</th>
         <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -23,7 +24,15 @@
                 </a>
             </td>
             <td>
-                <a href="<?php echo $base_url ?>/forms/videos/edit/<?php echo $row->id ?>">Editar</a>
+                <a class="btn btn-link"
+                   href="<?php echo $base_url ?>/forms/videos/edit/<?php echo $row->id ?>">Editar</a>
+            </td>
+            <td>
+                <form action="<?php echo $base_url ?>/forms/videos/delete" method="POST"
+                      id="postForm" enctype="multipart/form-data" onsubmit="return confirmDelete()">
+                    <input type="hidden" name="id" value="<?php echo $row->id ?>"/>
+                    <input type="submit" class="btn btn-link" value="Excluir"/>
+                </form>
             </td>
         </tr>
     <?php endforeach; ?>

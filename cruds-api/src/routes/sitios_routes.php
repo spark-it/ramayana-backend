@@ -283,3 +283,16 @@ $app->post('/sitios/edit/{id}', function ($request, $response, $args) {
     }
 });
 
+
+$app->post('/forms/sitios/delete', function ($request, $response, $args) {
+    $parsedBody = $request->getParsedBody();
+    $id = $parsedBody['id'];
+
+
+    if (Sitio::destroy($id)) {
+        return $response->withRedirect(BASE_URL . '/forms/sitios/list');
+    } else {
+        return $response->getBody()->write('Parâmetro não enviado', 400);
+    }
+});
+
