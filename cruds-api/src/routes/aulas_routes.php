@@ -126,17 +126,14 @@ $app->post('/aulas', function ($request, $response, $args) {
     $response_code = 201;
 
     $parsedBody = $request->getParsedBody();
-
     $title = $parsedBody['title'];
     $description = $parsedBody['description'];
     $text = $parsedBody['text'];
 
-    $fromForm = $parsedBody['fromForm'];
-
-
     $files = $request->getUploadedFiles();
     $image = $files['image'];
 
+    $fromForm = $parsedBody['fromForm'];
 
     $errors = null;
 
@@ -149,16 +146,6 @@ $app->post('/aulas', function ($request, $response, $args) {
         $errors['errors'][] = 'Title cannot have less than 3 characters';
     }
 
-
-    if ($description == null || empty($description)) {
-        $response_code = 400;
-        $errors['errors'][] = 'Description cannot be empty';
-
-    } else if (strlen($description) < 3) {
-        $response_code = 400;
-        $errors['errors'][] = 'Description cannot have less than 3 characters';
-    }
-
     if ($text == null || empty($text)) {
         $response_code = 400;
         $errors['errors'][] = 'Text cannot be empty';
@@ -169,30 +156,29 @@ $app->post('/aulas', function ($request, $response, $args) {
     }
 
 
-    if (!is_object($image)) {
-        $response_code = 400;
-        $errors['errors'][] = 'You need to send an image';
-    } else if ($image->getError() !== UPLOAD_ERR_OK) {
-        $response_code = 400;
-        $errors['errors'][] = 'Image upload error';
-    } else {
-        //    } else if ($image->getError() === UPLOAD_ERR_OK) {
+    $data = array(
+        'title' => $title,
+        'text' => $text
+    );
+
+
+    if ($description != null) {
+        $data['description'] = $description;
+    }
+
+
+    if (is_object($image) && !empty($image->file) ) {
         $directory = $this->get('settings')['upload_dir'];
         $filename = moveUploadedFile($directory, $image);
-        $response->write('uploaded ' . $filename . '<br/>');
         $image = $filename;
+        $data['image'] = $image;
     }
 
 
     if ($response_code == 400) {
         return $response->withJson($errors, $response_code);
     } else {
-        $result = Aula::create(array(
-            'title' => $title,
-            'description' => $description,
-            'text' => $text,
-            'image' => $image
-        ));
+        $result = Aula::create($data);
 
         $base_url = $this->get('settings')['base_url'];
         $result->image = $base_url . '/uploads/' . $result->image;

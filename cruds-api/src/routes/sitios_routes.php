@@ -61,8 +61,7 @@ $app->post('/sitios', function ($request, $response, $args) {
         $data['description'] = $description;
     }
 
-    if (is_object($image)) {
-        //    } else if ($image->getError() === UPLOAD_ERR_OK) {
+    if (is_object($image) && !empty($image->file) ) {
         $directory = $this->get('settings')['upload_dir'];
         $filename = moveUploadedFile($directory, $image);
         $image = $filename;
