@@ -1,0 +1,27 @@
+<?php
+
+require __DIR__.'/../../vendor/autoload.php';
+
+
+
+
+?>
+
+<!--<input onclick() type="image" src="https://stc.pagseguro.uol.com.br/public/img/botoes/pagamentos/209x48-comprar-assina.gif"-->
+<!--       name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!"/>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js"></script>
+</head>
+<body>
+<button onclick="PagSeguroLightbox('<?php echo $xml->code;?>')">Pagar com lightbox</button>
+<!--<a href="--><?php //echo $url;?><!--">Pagar com link padrão</a>-->
+</body>
+</html>
