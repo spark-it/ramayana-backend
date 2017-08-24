@@ -2,9 +2,14 @@
 
 namespace BrPayments;
 
+use BrPayments\Requests\RequestInterface;
 use GuzzleHttp\Client;
-use BrPayments\Requests\PagSeguro as Request;
-use BrPayments\Payments\PagSeguro as Order;
+use BrPayments\Requests\RequestInterface as Request;
+
+
+use BrPayments\OrderInterface as Order;
+
+//include __DIR__ . 'OrderInterface.php';
 
 
 class MakeRequest
@@ -13,20 +18,18 @@ class MakeRequest
     private $client;
     private $request;
 
-    public function __construct()
+    public function __construct(RequestInterface $request)
     {
         $this->client = new Client;
-        $this->request = new Request();
+        $this->request = $request;
     }
 
-    public function post(Order $order, $sandbox = null)
+    public function make(Order $order, $sandbox = null)
     {
         $response = $this->client->request(
             $this->request->getMethod(),
-            $this->request->getUrlCheckout($order, $sandbox),
-            [
-                'form_params' => []
-            ]
+            $this->request->getUrl($order, $sandbox),
+            $this->request->config()
         );
 
         return $response->getBody();

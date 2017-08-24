@@ -34,6 +34,13 @@
       "Tests\\": "tests"
     }
   },
+  "autoload": {
+    "psr-4": {
+      "BrPayments\\": "",
+      "BrPayments\\Payments\\": "Payments",
+      "BrPayments\\Requests\\": "Requests"
+    }
+  },
   "scripts": {
     "start": "php -S 0.0.0.0:8080 -t public public/index.php",
     "test": "phpunit"

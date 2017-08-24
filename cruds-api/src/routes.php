@@ -2,7 +2,6 @@
 // Routes
 use Slim\Views\PhpRenderer;
 
-include __DIR__ . '/models/PagSeguro2.class.php';
 include __DIR__ . '/models/Usuario.php';
 include __DIR__ . '/Payments/PagSeguro.php';
 include __DIR__ . '/Requests/PagSeguro.php';
@@ -115,7 +114,7 @@ $app->get('/pagseguro_venda', function ($request, $response) {
 
 
     //Request
-    $responsePagSeguro = (new BrPayments\MakeRequest())->post($pag_seguro, true);
+    $responsePagSeguro = (new BrPayments\MakeRequest($pag_seguro_request))->post($pag_seguro, true);
 
     $xml = new \SimpleXMLElement((string)$responsePagSeguro);
 

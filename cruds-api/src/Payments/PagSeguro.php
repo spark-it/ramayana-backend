@@ -1,8 +1,12 @@
 <?php
 
 namespace BrPayments\Payments;
+use BrPayments\OrderInterface;
 
-class PagSeguro
+include_once __DIR__ . '/../OrderInterface.php';
+
+
+class PagSeguro implements OrderInterface
 {
 
     protected $config;

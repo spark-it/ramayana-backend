@@ -4,7 +4,7 @@ namespace Tests\Payments;
 
 use \BrPayments\Payments\PagSeguro;
 
-include __DIR__ . '/../../src/Payments/PagSeguro.php';
+include_once __DIR__ . '/../../src/Payments/PagSeguro.php';
 
 
 class PagSeguroTest extends \PHPUnit_Framework_TestCase
