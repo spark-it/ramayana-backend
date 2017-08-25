@@ -35,6 +35,14 @@
     <link rel="stylesheet" href="<?php echo $assets_base?>css/style.css">
 </head>
 <body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.10&appId=1546114922113473&redirect_uri=http://google.com";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 <div id="preloader">
     <div id="status"></div>
 </div>
@@ -58,9 +66,7 @@
                                 <li><a href="<?php echo $base_url?>/aulas">Aulas resumidas</a></li>
                                 <li><a href="<?php echo $base_url?>/textos">Textos e Artigos</a></li>
                                 <li><a href="<?php echo $base_url?>/informes">Informes</a></li>
-                                <li><a href="<?php echo $base_url?>/sitios">Sitios</a></li>
                                 <li><a href="<?php echo $base_url?>/professor">Professor</a></li>
-                                <li><a href="<?php echo $base_url?>/contato">Contato</a></li>
                             </ul>
                         </nav>
                         <!-- Nav End -->
