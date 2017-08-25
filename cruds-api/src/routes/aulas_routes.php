@@ -1,10 +1,10 @@
 <?php
 
 
-include __DIR__ . '/../models/Aula.php';
+include_once __DIR__ . '/../models/Aula.php';
 
 
-$app->get('/forms/aulas/list', function ($request, $response, $args) {
+$app->get('/admin/aulas/list', function ($request, $response, $args) {
     check_logged($response);
     $rows = Aula::all();
 
@@ -13,7 +13,7 @@ $app->get('/forms/aulas/list', function ($request, $response, $args) {
     $this->renderer->render($response, "/foot.phtml", $args);
 });
 
-$app->get('/forms/aulas/create', function ($request, $response, $args) {
+$app->get('/admin/aulas/create', function ($request, $response, $args) {
     check_logged($response);
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
@@ -21,7 +21,7 @@ $app->get('/forms/aulas/create', function ($request, $response, $args) {
     $this->renderer->render($response, "/foot.phtml", $args);
 });
 
-$app->get('/forms/aulas/edit/{id}', function ($request, $response, $args) {
+$app->get('/admin/aulas/edit/{id}', function ($request, $response, $args) {
     check_logged($response);
 
     $rows = Aula::find($args['id']);
@@ -31,7 +31,7 @@ $app->get('/forms/aulas/edit/{id}', function ($request, $response, $args) {
     $this->renderer->render($response, "/foot.phtml", $args);
 });
 
-$app->post('/aulas/edit/{id}', function ($request, $response, $args) {
+$app->post('/api/edit/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $texto = Aula::find($args['id']);
     if (is_null($texto)) {
@@ -109,20 +109,18 @@ $app->post('/aulas/edit/{id}', function ($request, $response, $args) {
 
 
 
-$app->get('/aulas', function ($request, $response, $args) {
+$app->get('/api/aulas', function ($request, $response, $args) {
     $rows = Aula::all();
     return $response->withJson($rows, 200);
 });
 
 //Get specific crud
-$app->get('/aulas/{id}', function ($request, $response, $args) {
+$app->get('/api/aulas/{id}', function ($request, $response, $args) {
     $rows = Aula::find($args['id']);
-
-
     return $response->withJson($rows, 200);
 });
 
-$app->post('/aulas', function ($request, $response, $args) {
+$app->post('/api/aulas', function ($request, $response, $args) {
     $response_code = 201;
 
     $parsedBody = $request->getParsedBody();
@@ -191,7 +189,7 @@ $app->post('/aulas', function ($request, $response, $args) {
     }
 });
 
-$app->put('/aulas/{id}', function ($request, $response, $args) {
+$app->put('/api/aulas/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $aula = Aula::find($args['id']);
     if (is_null($aula)) {
@@ -272,7 +270,7 @@ $app->put('/aulas/{id}', function ($request, $response, $args) {
     }
 });
 
-$app->delete('/aulas/{id}', function ($request, $response, $args) {
+$app->delete('/api/aulas/{id}', function ($request, $response, $args) {
     if (Aula::destroy($args['id'])) {
         return $response->getBody()->write('', 200);
     } else {
@@ -280,7 +278,7 @@ $app->delete('/aulas/{id}', function ($request, $response, $args) {
     }
 });
 
-$app->post('/forms/aulas/delete', function ($request, $response, $args) {
+$app->post('/api/aulas/delete', function ($request, $response, $args) {
     $parsedBody = $request->getParsedBody();
     $id = $parsedBody['id'];
 

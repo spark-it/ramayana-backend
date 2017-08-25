@@ -1,10 +1,10 @@
 <?php
 
 
-include __DIR__ . '/../models/Texto.php';
+include_once __DIR__ . '/../models/Texto.php';
 
 
-$app->get('/forms/textos/list', function ($request, $response, $args) {
+$app->get('/admin/textos/list', function ($request, $response, $args) {
     check_logged($response);
 
     $rows = Texto::all();
@@ -13,7 +13,7 @@ $app->get('/forms/textos/list', function ($request, $response, $args) {
     $this->renderer->render($response, "/foot.phtml", $args);
 });
 
-$app->get('/forms/textos/create', function ($request, $response, $args) {
+$app->get('/admin/textos/create', function ($request, $response, $args) {
     check_logged($response);
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
     $this->renderer->render($response, "/textos/create.phtml", ['base_url' => BASE_URL]);
@@ -21,7 +21,7 @@ $app->get('/forms/textos/create', function ($request, $response, $args) {
 });
 
 
-$app->get('/forms/textos/edit/{id}', function ($request, $response, $args) {
+$app->get('/admin/textos/edit/{id}', function ($request, $response, $args) {
     check_logged($response);
     $rows = Texto::find($args['id']);
 
@@ -31,18 +31,18 @@ $app->get('/forms/textos/edit/{id}', function ($request, $response, $args) {
 });
 
 //Get a list
-$app->get('/textos', function ($request, $response, $args) {
+$app->get('/api/textos', function ($request, $response, $args) {
     $rows = Texto::all();
     return $response->withJson($rows, 200);
 });
 
 //Get specific crud
-$app->get('/textos/{id}', function ($request, $response, $args) {
+$app->get('/api/textos/{id}', function ($request, $response, $args) {
     $rows = Texto::find($args['id']);
     return $response->withJson($rows, 200);
 });
 
-$app->put('/textos/{id}', function ($request, $response, $args) {
+$app->put('/api/textos/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $texto = Texto::find($args['id']);
     if (is_null($texto)) {
@@ -118,7 +118,7 @@ $app->put('/textos/{id}', function ($request, $response, $args) {
 });
 
 
-$app->post('/textos', function ($request, $response, $args) {
+$app->post('/api/textos', function ($request, $response, $args) {
     $response_code = 201;
 
     $parsedBody = $request->getParsedBody();
@@ -189,7 +189,7 @@ $app->post('/textos', function ($request, $response, $args) {
 });
 
 
-$app->post('/textos/edit/{id}', function ($request, $response, $args) {
+$app->post('/api/textos/edit/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $texto = Texto::find($args['id']);
     if (is_null($texto)) {
@@ -265,7 +265,7 @@ $app->post('/textos/edit/{id}', function ($request, $response, $args) {
     }
 });
 
-$app->post('/forms/textos/delete', function ($request, $response, $args) {
+$app->post('/api/textos/delete', function ($request, $response, $args) {
     $parsedBody = $request->getParsedBody();
     $id = $parsedBody['id'];
 
@@ -278,7 +278,7 @@ $app->post('/forms/textos/delete', function ($request, $response, $args) {
 });
 
 
-$app->delete('/textos/{id}', function ($request, $response, $args) {
+$app->delete('/api/textos/{id}', function ($request, $response, $args) {
     if (Texto::destroy($args['id'])) {
         return $response->getBody()->write('', 200);
     } else {

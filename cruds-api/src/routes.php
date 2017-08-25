@@ -2,10 +2,10 @@
 // Routes
 use Slim\Views\PhpRenderer;
 
-include __DIR__ . '/models/Usuario.php';
-include __DIR__ . '/Payments/PagSeguro.php';
-include __DIR__ . '/Requests/PagSeguro.php';
-include __DIR__ . '/MakeRequest.php';
+include_once __DIR__ . '/models/Usuario.php';
+include_once __DIR__ . '/Payments/PagSeguro.php';
+include_once __DIR__ . '/Requests/PagSeguro.php';
+include_once __DIR__ . '/MakeRequest.php';
 
 function moveUploadedFile($directory, $uploadedFile)
 {
@@ -181,10 +181,11 @@ $app->get('/pagseguro_getstatus/{reference}', function ($request, $response, $ar
 });
 
 
-include 'routes/textos_routes.php';
-include 'routes/aulas_routes.php';
-include 'routes/informes_routes.php';
-include 'routes/sitios_routes.php';
-include 'routes/videos_routes.php';
-include 'routes/sobre_routes.php';
-include 'routes/user_routes.php';
+include_once 'routes/site_routes.php';
+include_once 'routes/textos_routes.php';
+include_once 'routes/aulas_routes.php';
+include_once 'routes/informes_routes.php';
+include_once 'routes/sitios_routes.php';
+include_once 'routes/videos_routes.php';
+include_once 'routes/sobre_routes.php';
+include_once 'routes/user_routes.php';

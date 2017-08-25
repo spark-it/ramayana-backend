@@ -1,7 +1,7 @@
 <?php
 
 
-include __DIR__ . '/../models/Sobre.php';
+include_once __DIR__ . '/../models/Sobre.php';
 
 
 //Get a list

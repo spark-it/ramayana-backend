@@ -1,17 +1,17 @@
 <?php
 
 
-include __DIR__ . '/../models/Informe.php';
+include_once __DIR__ . '/../models/Informe.php';
 
 
 //Get a list
-$app->get('/informes', function ($request, $response, $args) {
+$app->get('/api/informes', function ($request, $response, $args) {
     $rows = Informe::all();
     return $response->withJson($rows, 200);
 });
 
 //Get specific crud
-$app->get('/informes/{id}', function ($request, $response, $args) {
+$app->get('/api/informes/{id}', function ($request, $response, $args) {
     $rows = Informe::find($args['id']);
     return $response->withJson($rows, 200);
 });
@@ -19,7 +19,7 @@ $app->get('/informes/{id}', function ($request, $response, $args) {
 
 
 
-$app->post('/informes', function ($request, $response, $args) {
+$app->post('/api/informes', function ($request, $response, $args) {
     $response_code = 201;
 
     $parsedBody = $request->getParsedBody();
@@ -90,7 +90,7 @@ $app->post('/informes', function ($request, $response, $args) {
     }
 });
 
-$app->put('/informes/{id}', function ($request, $response, $args) {
+$app->put('/api/informes/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $aula = Informe::find($args['id']);
     if (is_null($aula)) {
@@ -171,7 +171,7 @@ $app->put('/informes/{id}', function ($request, $response, $args) {
     }
 });
 
-$app->delete('/informes/{id}', function ($request, $response, $args) {
+$app->delete('/api/informes/{id}', function ($request, $response, $args) {
     if (Informe::destroy($args['id'])) {
         return $response->getBody()->write('', 200);
     } else {
@@ -179,13 +179,9 @@ $app->delete('/informes/{id}', function ($request, $response, $args) {
     }
 });
 
-
-
-
-
 //Forms
 
-$app->get('/forms/informes/list', function ($request, $response, $args) {
+$app->get('/admin/informes/list', function ($request, $response, $args) {
     check_logged($response);
     $rows = Informe::all();
 
@@ -194,7 +190,7 @@ $app->get('/forms/informes/list', function ($request, $response, $args) {
     $this->renderer->render($response, "/foot.phtml", $args);
 });
 
-$app->get('/forms/informes/create', function ($request, $response, $args) {
+$app->get('/admin/informes/create', function ($request, $response, $args) {
     check_logged($response);
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
@@ -202,7 +198,7 @@ $app->get('/forms/informes/create', function ($request, $response, $args) {
     $this->renderer->render($response, "/foot.phtml", $args);
 });
 
-$app->get('/forms/informes/edit/{id}', function ($request, $response, $args) {
+$app->get('/admin/informes/edit/{id}', function ($request, $response, $args) {
     check_logged($response);
     $rows = Informe::find($args['id']);
 
@@ -211,7 +207,7 @@ $app->get('/forms/informes/edit/{id}', function ($request, $response, $args) {
     $this->renderer->render($response, "/foot.phtml", $args);
 });
 
-$app->post('/informes/edit/{id}', function ($request, $response, $args) {
+$app->post('/api/informes/edit/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $texto = Informe::find($args['id']);
     if (is_null($texto)) {
@@ -287,7 +283,7 @@ $app->post('/informes/edit/{id}', function ($request, $response, $args) {
     }
 });
 
-$app->post('/forms/informes/delete', function ($request, $response, $args) {
+$app->post('/admin/informes/delete', function ($request, $response, $args) {
     $parsedBody = $request->getParsedBody();
     $id = $parsedBody['id'];
 

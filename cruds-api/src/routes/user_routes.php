@@ -4,9 +4,6 @@ use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 
-$app->get('/', function ($request, $response) {
-    $this->renderer->render($response, '/user/facebook_login.phtml', ['base_url' => BASE_URL]);
-});
 
 $app->get('/user/login/{access_token}', function ($request, $response, $args) {
     $access_token = $args['access_token'];

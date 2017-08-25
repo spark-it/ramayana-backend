@@ -1,7 +1,7 @@
 <?php
 
 
-include __DIR__ . '/../models/Video.php';
+include_once __DIR__ . '/../models/Video.php';
 
 
 $app->get('/forms/videos/list', function ($request, $response, $args) {

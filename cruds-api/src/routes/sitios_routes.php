@@ -1,23 +1,23 @@
 <?php
 
 
-include __DIR__ . '/../models/Sitio.php';
+include_once __DIR__ . '/../models/Sitio.php';
 
 
 //Get a list
-$app->get('/sitios', function ($request, $response, $args) {
+$app->get('/api/sitios', function ($request, $response, $args) {
     $rows = Sitio::all();
     return $response->withJson($rows, 200);
 });
 
 //Get specific crud
-$app->get('/sitios/{id}', function ($request, $response, $args) {
+$app->get('/api/sitios/{id}', function ($request, $response, $args) {
     $rows = Sitio::find($args['id']);
     return $response->withJson($rows, 200);
 });
 
 
-$app->post('/sitios', function ($request, $response, $args) {
+$app->post('/api/sitios', function ($request, $response, $args) {
     $response_code = 201;
 
     $parsedBody = $request->getParsedBody();
@@ -88,7 +88,7 @@ $app->post('/sitios', function ($request, $response, $args) {
     }
 });
 
-$app->put('/sitios/{id}', function ($request, $response, $args) {
+$app->put('/api/sitios/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $aula = Sitio::find($args['id']);
     if (is_null($aula)) {
@@ -169,7 +169,7 @@ $app->put('/sitios/{id}', function ($request, $response, $args) {
     }
 });
 
-$app->delete('/sitios/{id}', function ($request, $response, $args) {
+$app->delete('/api/sitios/{id}', function ($request, $response, $args) {
     if (Sitio::destroy($args['id'])) {
         return $response->getBody()->write('', 200);
     } else {
@@ -180,7 +180,7 @@ $app->delete('/sitios/{id}', function ($request, $response, $args) {
 
 //Forms
 
-$app->get('/forms/sitios/list', function ($request, $response, $args) {
+$app->get('/admin/sitios/list', function ($request, $response, $args) {
     check_logged($response);
     $rows = Sitio::all();
 
@@ -189,7 +189,7 @@ $app->get('/forms/sitios/list', function ($request, $response, $args) {
     $this->renderer->render($response, "/foot.phtml", $args);
 });
 
-$app->get('/forms/sitios/create', function ($request, $response, $args) {
+$app->get('/admin/sitios/create', function ($request, $response, $args) {
     check_logged($response);
 
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
@@ -197,7 +197,7 @@ $app->get('/forms/sitios/create', function ($request, $response, $args) {
     $this->renderer->render($response, "/foot.phtml", $args);
 });
 
-$app->get('/forms/sitios/edit/{id}', function ($request, $response, $args) {
+$app->get('/admin/sitios/edit/{id}', function ($request, $response, $args) {
     check_logged($response);
     $rows = Sitio::find($args['id']);
 
@@ -206,7 +206,7 @@ $app->get('/forms/sitios/edit/{id}', function ($request, $response, $args) {
     $this->renderer->render($response, "/foot.phtml", $args);
 });
 
-$app->post('/sitios/edit/{id}', function ($request, $response, $args) {
+$app->post('/admin/edit/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $texto = Sitio::find($args['id']);
     if (is_null($texto)) {
@@ -283,7 +283,7 @@ $app->post('/sitios/edit/{id}', function ($request, $response, $args) {
 });
 
 
-$app->post('/forms/sitios/delete', function ($request, $response, $args) {
+$app->post('/admin/sitios/delete', function ($request, $response, $args) {
     $parsedBody = $request->getParsedBody();
     $id = $parsedBody['id'];
 
