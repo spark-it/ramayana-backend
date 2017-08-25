@@ -3,8 +3,7 @@
 $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $base = 'http://cruds-api.dev:8888';
 if (!strpos($actual_link,'dev')) {
-    // $base = 'http://mayckxavier.com/projetos/ramayana-backend/public';
-    $base = 'http://18.220.218.65';
+    $base = 'http://professorramayana.com';
 }
 
 
@@ -28,5 +27,7 @@ return [
 
         'base_url' => $base,
         'upload_dir' => __DIR__ . '/../public/uploads',
+        'facebook_app_id' => '1546114922113473',
+        'facebook_app_secret' => '99485e0d80b47066811e201f4102450c'
     ],
 ];

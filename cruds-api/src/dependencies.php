@@ -6,9 +6,6 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 $capsule = new Capsule;
 
 
-
-$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-
 $settings = array(
     'driver' => 'mysql',
     'host' => 'localhost',
@@ -21,19 +18,19 @@ $settings = array(
 );
 
 
-if (!strpos($actual_link,'dev')) {
-    // Database information
+if($_SERVER['HTTP_HOST'] == 'professorramayana.com'){
     $settings = array(
         'driver' => 'mysql',
-        'host' => 'mysql.mayckxavier.com',
-        'database' => 'freela_ramayana',
-        'username' => 'mayckxavier',
-        'password' => 'penajaca123',
+        'host' => '127.0.0.1',
+        'database' => 'ramayana_admin',
+        'username' => 'root',
+        'password' => 'kkVqZ6ApupN5',
         'charset' => 'utf8',
         'collation' => 'utf8_unicode_ci',
         'prefix' => '',
     );
 }
+
 
 $capsule->addConnection($settings);
 
