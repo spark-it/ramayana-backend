@@ -7,6 +7,9 @@ class Aula extends \Illuminate\Database\Eloquent\Model
 
     public function getImageAttribute($value)
     {
-        return BASE_URL . '/uploads/' . $value;
+        if($value != null){
+            return BASE_URL . '/uploads/' . $value;
+        }
+        return $value;
     }
 }
