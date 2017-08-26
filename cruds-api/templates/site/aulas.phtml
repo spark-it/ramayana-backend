@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <span class="page-title"><?php echo $aula->title?></span>
+                <span class="page-title"><?php echo $aula->title ?></span>
             </div>
         </div>
     </div>
@@ -17,6 +17,18 @@
         <div class="row">
             <div class="col-md-12">
 
+
+                <?php if ($aula->image != null): ?>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="single-events single-product margin-bottom-30">
+                            <div class="single-event-thumb">
+                                <img src="<?php echo $aula->image ?>" alt="<?php echo $aula->title ?>">
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+
                 <!-- Blog Classic Start -->
                 <div class="blog-grid">
                     <div class="row">
@@ -26,7 +38,7 @@
                             <!-- Post Item Start -->
                             <div class="post-item">
                                 <div class="text">
-                                    <?php echo $aula->text?>
+                                    <?php echo nl2br($aula->text) ?>
                                 </div>
                             </div>
                             <!-- Post Item End -->
@@ -42,7 +54,7 @@
                 <div class="author-box">
                     <div class="inner">
                         <div class="author-thumb">
-                            <img src="<?php echo $assets_base?>img/marcos-ramayana.jpg" alt="">
+                            <img src="<?php echo $assets_base ?>img/marcos-ramayana.jpg" alt="">
                         </div>
                         <div class="author-info">
                             <h3>Dr. Marcos Ramayana</h3>

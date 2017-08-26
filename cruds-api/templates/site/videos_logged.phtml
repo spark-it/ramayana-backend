@@ -1,0 +1,46 @@
+<!-- gallery  Start -->
+<div class="gallery-area-area  padding-tp-70-bt-50">
+    <div class="video-content" style="margin: 2em 10%">
+        <iframe width="100%" height="500" src="https://www.youtube.com/embed/jssO8-5qmag" frameborder="0"
+                allowfullscreen></iframe>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="title">
+                <h1>Nossa galeria de videos</h1>
+                <div class="border-shape"></div>
+            </div>
+
+
+            <!--            http://img.youtube.com/vi/DLPf1qgEyS8/maxresdefault.jpg-->
+
+            <?php foreach ($videos as $video): ?>
+
+                <div class="col-md-6 col-sm-6">
+                    <div class="course-gallery margin-bottom-30 gallery-item">
+                        <img src="http://img.youtube.com/vi/<?php echo getVideoIdFromYoutubeLink($video->video_link) ?>/maxresdefault.jpg"
+                             alt=""/>
+                        <div class="gallery-img-overlay"></div>
+                        <div class="gallery-overlay">
+                            <div class="gallery-item-text">
+                                <h3><?php echo $video->title ?></h3>
+
+                                <a class="gallery-photo" href="img/g1.jpg">
+                                    <div style="position:relative;height:0;padding-bottom:56.25%">
+                                        <div style="position:relative;height:0;padding-bottom:56.25%">
+                                            <iframe src="https://www.youtube.com/embed/<?php echo $row->video_id?>?ecver=2" width="640" height="360" frameborder="0"
+                                                    style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+                                    <img src="img/lock.svg" style="width: 60%">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<!-- gallery End -->

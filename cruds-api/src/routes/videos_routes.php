@@ -4,7 +4,7 @@
 include_once __DIR__ . '/../models/Video.php';
 
 
-$app->get('/forms/videos/list', function ($request, $response, $args) {
+$app->get('/admin/videos/list', function ($request, $response, $args) {
     check_logged($response);
 
     $rows = Video::all();
@@ -13,7 +13,7 @@ $app->get('/forms/videos/list', function ($request, $response, $args) {
     $this->renderer->render($response, "/foot.phtml", $args);
 });
 
-$app->get('/forms/videos/create', function ($request, $response, $args) {
+$app->get('/admin/videos/create', function ($request, $response, $args) {
     check_logged($response);
     $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
     $this->renderer->render($response, "/videos/create.phtml", ['base_url' => BASE_URL]);
@@ -21,7 +21,7 @@ $app->get('/forms/videos/create', function ($request, $response, $args) {
 });
 
 
-$app->get('/forms/videos/edit/{id}', function ($request, $response, $args) {
+$app->get('/admin/videos/edit/{id}', function ($request, $response, $args) {
     check_logged($response);
     $rows = Video::find($args['id']);
 
@@ -37,18 +37,18 @@ $app->get('/forms/videos/edit/{id}', function ($request, $response, $args) {
 });
 
 //Get a list
-$app->get('/videos', function ($request, $response, $args) {
+$app->get('/api/videos', function ($request, $response, $args) {
     $rows = Video::all();
     return $response->withJson($rows, 200);
 });
 
 //Get specific crud
-$app->get('/videos/{id}', function ($request, $response, $args) {
+$app->get('/api/videos/{id}', function ($request, $response, $args) {
     $rows = Video::find($args['id']);
     return $response->withJson($rows, 200);
 });
 
-$app->put('/videos/{id}', function ($request, $response, $args) {
+$app->put('/api/videos/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $video = Video::find($args['id']);
     if (is_null($video)) {
@@ -114,7 +114,7 @@ $app->put('/videos/{id}', function ($request, $response, $args) {
 });
 
 
-$app->post('/videos', function ($request, $response, $args) {
+$app->post('/api/videos', function ($request, $response, $args) {
     $response_code = 201;
 
     $parsedBody = $request->getParsedBody();
@@ -184,7 +184,7 @@ $app->post('/videos', function ($request, $response, $args) {
 });
 
 
-$app->post('/videos/edit/{id}', function ($request, $response, $args) {
+$app->post('/api/videos/edit/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $video = Video::find($args['id']);
     if (is_null($video)) {
@@ -266,7 +266,7 @@ $app->post('/videos/edit/{id}', function ($request, $response, $args) {
 });
 
 
-$app->post('/forms/videos/delete', function ($request, $response, $args) {
+$app->post('/admin/videos/delete', function ($request, $response, $args) {
     $parsedBody = $request->getParsedBody();
     $id = $parsedBody['id'];
 
@@ -278,7 +278,7 @@ $app->post('/forms/videos/delete', function ($request, $response, $args) {
     }
 });
 
-$app->delete('/videos/{id}', function ($request, $response, $args) {
+$app->delete('/api/videos/{id}', function ($request, $response, $args) {
     if (Video::destroy($args['id'])) {
         return $response->getBody()->write('', 200);
     } else {

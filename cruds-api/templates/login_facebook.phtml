@@ -136,8 +136,6 @@ if (isset($_SESSION['user']) && $_SESSION['user'] != null) {
 
     $(document).ready(function () {
         $.ajaxSetup({cache: false});
-
-
         $.getScript('//connect.facebook.net/en_US/sdk.js', function () {
             FB.init({
                 appId: '1546114922113473',

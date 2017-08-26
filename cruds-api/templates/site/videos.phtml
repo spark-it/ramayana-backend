@@ -4,7 +4,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <span class="page-title"><?php echo $sitio->title ?></span>
+                <span class="page-title">
+                    Vídeos
+                </span>
             </div>
         </div>
     </div>
@@ -26,7 +28,10 @@
                             <!-- Post Item Start -->
                             <div class="post-item">
                                 <div class="text">
-                                    <?php echo nl2br($sitio->text) ?>
+                                    <div class="fb-login-button" data-max-rows="1" data-size="large"
+                                         data-button-type="login_with" data-show-faces="false"
+                                         data-auto-logout-link="true" data-use-continue-as="true"
+                                         onlogin="checkLoginState();"></div>
                                 </div>
                             </div>
                             <!-- Post Item End -->
@@ -58,3 +63,18 @@
     </div>
 </section>
 <!-- Blog End -->
+
+<script type="text/javascript">
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            if (response.status === 'connected') {
+                var accessToken = response.authResponse.accessToken;
+                console.log(response.authResponse);
+                console.log(accessToken);
+
+                //Redirect
+                window.location = "<?php echo BASE_URL?>/videos/" + accessToken;
+            }
+        });
+    }
+</script>

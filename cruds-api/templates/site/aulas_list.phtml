@@ -1,0 +1,49 @@
+<!-- Page Title Start -->
+<div class="page-title-area shop-page">
+    <div class="image-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <span class="page-title">Aulas</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Title End -->
+
+<!-- Cart Page Start -->
+<div class="cart-page-area padding-tp-70-bt-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-text table-responsive">
+                    <table class="table table-bordered table-responsive">
+                        <thead>
+                        <tr>
+                            <th class="product-name">Título</th>
+                            <th class="product-name">Descrição</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <?php foreach ($aulas as $aula): ?>
+                            <tr>
+                                <td class="product-name">
+                                    <a href="<?php echo $base_url . '/aulas/' . $aula->id?>">
+                                        <?php echo $aula->title ?>
+                                    </a>
+                                </td>
+                                <td class="product-name">
+                                    <p><?php echo $aula->description ?></p>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Cart Page End -->
