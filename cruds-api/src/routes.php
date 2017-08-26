@@ -17,12 +17,40 @@ function moveUploadedFile($directory, $uploadedFile)
     return $filename;
 }
 
+function sendWelcomeMail($email)
+{
+    $subject = 'Bem Vindo!';
+    $message = 'Seja bem vindo ao Professor Ramayana!';
+    return sendMail($email, $subject, $message);
+}
+
+function sendMail($email, $subject, $message)
+{
+    $to = $email;
+    $headers = 'From: contato@professorramayana.com.br' . "\r\n" .
+        'Reply-To: contato@professorramayana.com.br' . "\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+
+    return mail($to, $subject, $message, $headers);
+}
+
+function getVideoIdFromYoutubeLink($video_link){
+    $subject = $video_link;
+    $url = parse_url($subject);
+    parse_str($url['query'], $query);
+    return $query['v'];
+}
+
+
+
 $container = $app->getContainer();
 $container['renderer'] = new PhpRenderer("../templates");
 
 $settings = $container->get('settings');
 
 define("BASE_URL", $settings['base_url']);
+define('FACEBOOK_APP_ID', $settings['facebook_app_id']);
+define('FACEBOOK_APP_SECRET', $settings['facebook_app_secret']);
 
 function check_logged($response)
 {
@@ -107,7 +135,6 @@ $app->get('/pagseguro_venda', function ($request, $response) {
         '',
         'ATA'
     );
-
 
 
     $pag_seguro->addProduct(1, 'Videos Ramayana', 40.00, 1);

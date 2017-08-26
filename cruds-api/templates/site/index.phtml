@@ -1,7 +1,7 @@
 <!-- Slider Start -->
 <div class="main-slider">
     <div class="slide-carousel owl-item">
-        <div class="item" style="background-image:url(<?php echo $assets_base?>img/slider1.jpg);">
+        <div class="item" style="background-image:url(<?php echo $assets_base ?>img/slider1.jpg);">
             <div class="overlay"></div>
             <div class="text">
                 <div class="this-item">
@@ -12,11 +12,11 @@
                 </div>
             </div>
         </div>
-        <div class="item" style="background-image:url(<?php echo $assets_base?>img/slider2.jpg);">
+        <div class="item" style="background-image:url(<?php echo $assets_base ?>img/slider2.jpg);">
             <div class="overlay"></div>
             <div class="text">
                 <div class="this-item">
-                    <h2>Mais de 70 video aulas</h2>
+                    <h2>Mais de <?php echo $video_count ?> video aulas</h2>
                 </div>
                 <div class="this-item">
                     <h3></h3>
@@ -43,7 +43,8 @@
                     <div class="single-course">
                         <h3><a href="#">Direitos Políticos</a></h3>
                         <div class="course-icon">
-                            <p>Tudo sobre: Direitos Políticos, Pacto Internacional sobre Direitos Civis e Políticos, etc.</p>
+                            <p>Tudo sobre: Direitos Políticos, Pacto Internacional sobre Direitos Civis e Políticos,
+                                etc.</p>
                         </div>
                     </div>
                 </div>
@@ -51,7 +52,7 @@
                     <div class="single-course">
                         <h3><a href="#">Conceito de Direito Eleitoral</a></h3>
                         <div class="course-icon">
-                            <p>Tudo sobre: Conceito de Direito Eleitoral,  Democracia, etc.</p>
+                            <p>Tudo sobre: Conceito de Direito Eleitoral, Democracia, etc.</p>
                         </div>
                     </div>
                 </div>
@@ -75,7 +76,8 @@
                     <div class="single-course">
                         <h3><a href="#">Ministério Público</a></h3>
                         <div class="course-icon">
-                            <p>Tudo sobre: Base legal das regras sobre o alistamento eleitoral, Requerimento de alistamento eleitoral – RAE, etc.</p>
+                            <p>Tudo sobre: Base legal das regras sobre o alistamento eleitoral, Requerimento de
+                                alistamento eleitoral – RAE, etc.</p>
                         </div>
                     </div>
                 </div>
@@ -100,7 +102,7 @@
             <div class="col-md-12">
                 <div class="call-to-action">
                     <div class="call-to-action-text">
-                        <h2>Tenha acesso a mais de 70 vídeos agora!!!</h2>
+                        <h2>Tenha acesso a mais de <?php echo $video_count ?> vídeos agora!!!</h2>
                         <p>O melhor conteúdo sobre Direito Eleitoral com o autor mais reconhecido no assunto.</p>
                     </div>
                     <div class="call-to-action-button">
@@ -123,42 +125,26 @@
                 <h1>Últimas Aulas</h1>
                 <div class="border-shape"></div>
             </div>
-            <div class="col-md-4 col-sm-4 ">
-                <div class="single-news margin-bottom-30">
-                    <!-- <div class="single-news-thumb">
-                        <img src="img/b1.jpg" alt=""/>
-                    </div> -->
-                    <div class="post-content">
-                        <h2><a href="blog-single.html">PRESTAÇÃO DE CONTAS PARTIDÁRIAS. NOÇÕES.</a></h2>
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam, et curabitur ac aenean vivamus erat, posuere faucibus maecenas habitant, nibh nostrud turpis.</p>
-                        <a href="blog-single.html" class="readmore-button">Leia mais</a>
+
+
+            <?php foreach ($aulas_list as $aula): ?>
+                <div class="col-md-4 col-sm-4 ">
+                    <div class="single-news margin-bottom-30">
+                        <!-- <div class="single-news-thumb">
+                            <img src="img/b1.jpg" alt=""/>
+                        </div> -->
+                        <div class="post-content">
+                            <h2><a href="<?php echo BASE_URL . '/aulas/' . $aula->id ?>"><?php echo $aula->title ?></a></h2>
+                            <p><?php echo $aula->description ?></p>
+                            <a href="<?php echo BASE_URL . '/aulas/' . $aula->id ?>" class="readmore-button">
+                                Leia mais
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 col-sm-4 ">
-                <div class="single-news margin-bottom-30">
-                    <!-- <div class="single-news-thumb">
-                        <img src="img/b2.jpg" alt=""/>
-                    </div> -->
-                    <div class="post-content">
-                        <h2><a href="blog-single.html">SUBSTITUIÇÃO DOS CANDIDATOS</a></h2>
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam, et curabitur ac aenean vivamus erat, posuere faucibus maecenas habitant, nibh nostrud turpis.</p>
-                        <a href="blog-single.html" class="readmore-button">Leia mais</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-4 ">
-                <div class="single-news margin-bottom-30">
-                    <!-- <div class="single-news-thumb">
-                        <img src="img/b3.jpg" alt=""/>
-                    </div> -->
-                    <div class="post-content">
-                        <h2><a href="blog-single.html">TUTELA PROVISÓRIA ELEITORAL</a></h2>
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam, et curabitur ac aenean vivamus erat, posuere faucibus maecenas habitant, nibh nostrud turpis.</p>
-                        <a href="blog-single.html" class="readmore-button">Leia mais</a>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
+
+
         </div>
     </div>
 </div>
@@ -171,42 +157,24 @@
                 <h1>Últimos textos e artigos</h1>
                 <div class="border-shape"></div>
             </div>
-            <div class="col-md-4 col-sm-4 ">
-                <div class="single-events  margin-bottom-30">
-                    <div class="single-event-thumb">
-                        <img src="<?php echo $assets_base?>img/event1.jpg" alt=""/>
-                    </div>
-                    <div class="event-content">
-                        <h3><a href="#">PONTOS DO CONCURSO DO MP RIO DE JANEIRO?</a></h3>
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam.</p>
-                        <a href="blog-single.html" class="readmore-button">Leia mais</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-4 ">
-                <div class="single-events  margin-bottom-30">
-                    <div class="single-event-thumb">
-                        <img src="<?php echo $assets_base?>img/event2.jpg" alt=""/>
-                    </div>
-                    <div class="event-content">
-                        <h3><a href="#">PONTOS DO CONCURSO DO MP RIO DE JANEIRO?</a></h3>
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam.</p>
-                        <a href="blog-single.html" class="readmore-button">Leia mais</a>
+
+            <?php foreach ($textos_list as $texto): ?>
+                <div class="col-md-4 col-sm-4 ">
+                    <div class="single-events  margin-bottom-30">
+                        <div class="single-event-thumb">
+                            <img src="<?php echo $texto->image ?>" alt=""/>
+                        </div>
+                        <div class="event-content">
+                            <h3>
+                                <a href="<?php echo BASE_URL . '/textos/' . $texto->id ?>"><?php echo $texto->title ?></a>
+                            </h3>
+                            <p><?php echo $texto->description ?></p>
+                            <a href="<?php echo BASE_URL . '/textos/' . $texto->id ?>" class="readmore-button">Leia
+                                mais</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 col-sm-4 ">
-                <div class="single-events  margin-bottom-30">
-                    <div class="single-event-thumb">
-                        <img src="<?php echo $assets_base?>img/event3.jpg" alt=""/>
-                    </div>
-                    <div class="event-content">
-                        <h3><a href="#">PONTOS DO CONCURSO DO MP RIO DE JANEIRO</a></h3>
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam.</p>
-                        <a href="blog-single.html" class="readmore-button">Leia mais</a>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
@@ -219,28 +187,28 @@
         <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="count-up-item">
-                    <h2 class="counter">70</h2>
+                    <h2 class="counter"><?php echo $video_count ?></h2>
                     <p>Videos</p>
 
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="count-up-item">
-                    <h2 class="counter">25</h2>
+                    <h2 class="counter"><?php echo $aula_count ?></h2>
                     <p>Aulas</p>
 
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="count-up-item">
-                    <h2 class="counter">30</h2>
+                    <h2 class="counter"><?php echo $texto_count ?></h2>
                     <p>Textos</p>
 
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="count-up-item">
-                    <h2 class="counter">15</h2>
+                    <h2 class="counter"><?php echo $informe_count ?></h2>
                     <p>Informes</p>
 
                 </div>
@@ -268,7 +236,8 @@
                         <span class="client-designation">CEO - Cool Media</span>
                     </div>
                     <div class="client-content">
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam</p>
+                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie.
+                            Tincidunt sit proin lacinia et vulputate diam</p>
                     </div>
                 </div>
 
@@ -278,7 +247,8 @@
                         <span class="client-designation">CEO - XYZ International</span>
                     </div>
                     <div class="client-content">
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam</p>
+                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie.
+                            Tincidunt sit proin lacinia et vulputate diam</p>
                     </div>
                 </div>
 
@@ -288,7 +258,8 @@
                         <span class="client-designation">Director - Andrew Media</span>
                     </div>
                     <div class="client-content">
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam</p>
+                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie.
+                            Tincidunt sit proin lacinia et vulputate diam</p>
                     </div>
                 </div>
 
@@ -298,7 +269,8 @@
                         <span class="client-designation">Chairman - XYZ Ltd</span>
                     </div>
                     <div class="client-content">
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam</p>
+                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie.
+                            Tincidunt sit proin lacinia et vulputate diam</p>
                     </div>
                 </div>
 
@@ -308,7 +280,8 @@
                         <span class="client-designation">Founder - Creative Queens</span>
                     </div>
                     <div class="client-content">
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam</p>
+                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie.
+                            Tincidunt sit proin lacinia et vulputate diam</p>
                     </div>
                 </div>
 
@@ -318,7 +291,8 @@
                         <span class="client-designation">CEO - Executive Web</span>
                     </div>
                     <div class="client-content">
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam</p>
+                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie.
+                            Tincidunt sit proin lacinia et vulputate diam</p>
                     </div>
                 </div>
 
@@ -328,7 +302,8 @@
                         <span class="client-designation">CEO - A3 Devs</span>
                     </div>
                     <div class="client-content">
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam</p>
+                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie.
+                            Tincidunt sit proin lacinia et vulputate diam</p>
                     </div>
                 </div>
 
@@ -338,7 +313,8 @@
                         <span class="client-designation">CEO - A3 Devs</span>
                     </div>
                     <div class="client-content">
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam</p>
+                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie.
+                            Tincidunt sit proin lacinia et vulputate diam</p>
                     </div>
                 </div>
 
@@ -348,7 +324,8 @@
                         <span class="client-designation">CEO - A3 Devs</span>
                     </div>
                     <div class="client-content">
-                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie. Tincidunt sit proin lacinia et vulputate diam</p>
+                        <p>Lorem ipsum dolor sit amet, vestibulum turpis sed orci, vel tellus justo quam, nec molestie.
+                            Tincidunt sit proin lacinia et vulputate diam</p>
                     </div>
                 </div>
 
