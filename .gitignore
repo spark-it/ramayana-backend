@@ -1,1 +1,4 @@
 .idea
+LightsailDefaultPrivateKey-us-east-2.pem
+composer.phar
+cruds-api/public/uploads
