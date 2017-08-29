@@ -16,33 +16,21 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="table-text table-responsive">
-                    <table class="table table-bordered table-responsive">
-                        <thead>
-                        <tr>
-                            <th class="product-name">Título</th>
-                            <th class="product-name">Descrição</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <?php foreach ($aulas as $aula): ?>
-                            <tr>
-                                <td class="product-name">
-                                    <a href="<?php echo $base_url . '/aulas/' . $aula->id?>">
-                                        <?php echo $aula->title ?>
-                                    </a>
-                                </td>
-                                <td class="product-name">
-                                    <p><?php echo $aula->description ?></p>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                <ul class="blog-listitem">
+                    <?php foreach ($aulas as $aula): ?>
+                        <li class="blog-listitens">
+                            <a href="<?php echo $base_url . '/aulas/' . $aula->id?>">
+                              <h3 class="product-name">
+                                <?php echo $aula->title ?>
+                              </h3>
+                              <p class="product-name">
+                                  <?php echo $aula->description ?>
+                              </p>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
             </div>
-
         </div>
     </div>
 </div>
