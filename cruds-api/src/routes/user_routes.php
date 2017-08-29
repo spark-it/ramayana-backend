@@ -49,11 +49,3 @@ $app->get('/user/list_videos', function ($request, $response, $args) {
 //    $rows = Texto::all();
     $this->renderer->render($response, "/user/list_videos.phtml", ['base_url' => BASE_URL]);
 });
-
-
-
-
-
-
-
-

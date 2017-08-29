@@ -24,14 +24,13 @@
                     <div class="row">
                         <div class="col-md-12">
 
-
                             <!-- Post Item Start -->
                             <div class="post-item">
                                 <div class="text">
-                                    <div class="fb-login-button" data-max-rows="1" data-size="large"
-                                         data-button-type="login_with" data-show-faces="false"
-                                         data-auto-logout-link="true" data-use-continue-as="true"
-                                         onlogin="checkLoginState();"></div>
+                                    Para acessar os videos é necessário fazer o pagamento.
+                                    <div class="checkout-button" style="text-align: left !important;">
+                                        <a href="#" onclick="openLightBox('<?php echo $xml->code; ?>')">Pague aqui com o PagSeguro</a>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Post Item End -->
@@ -63,26 +62,18 @@
     </div>
 </section>
 <!-- Blog End -->
+<script>
+    function openLightBox(code){
+        PagSeguroLightbox({
+            code: code
+        },{
+            success : function(transactionCode) {
+                alert('Aguarde enquanto seu pagamento é processado.')
+//                window.location = "<?php //echo $base_url?>///pagseguro/payment_status/"+transactionCode;
+            },
+            abort : function() {
 
-<script type="text/javascript">
-    function checkLoginState() {
-        FB.getLoginStatus(function (response) {
-            if (response.status === 'connected') {
-                var accessToken = response.authResponse.accessToken;
-                console.log(response.authResponse);
-                console.log(accessToken);
-
-                //Redirect
-                window.location = "<?php echo BASE_URL?>/videos/" + accessToken;
             }
-        });
+        })
     }
-
-    document.onreadystatechange = function () {
-        if (document.readyState === "complete") {
-            checkLoginState();
-        }
-    }
-
-
 </script>

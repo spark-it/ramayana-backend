@@ -2,9 +2,13 @@
 // Routes
 use Slim\Views\PhpRenderer;
 
+
+
 include_once __DIR__ . '/models/Usuario.php';
 include_once __DIR__ . '/Payments/PagSeguro.php';
 include_once __DIR__ . '/Requests/PagSeguro.php';
+include_once __DIR__ . '/Notifications/PagSeguro.php';
+include_once __DIR__ . '/Requests/PagSeguroNotification.php';
 include_once __DIR__ . '/MakeRequest.php';
 
 function moveUploadedFile($directory, $uploadedFile)
@@ -24,6 +28,17 @@ function sendWelcomeMail($email)
     return sendMail($email, $subject, $message);
 }
 
+function sendPaymentConfirmationEmail($usuario)
+{
+    $subject = 'Seu pagamento foi confirmado!';
+    $message = 'Seu pagamento foi confirmado! Agora você pode acessar os videos do Professor Ramayana!';
+    return sendMail($usuario->email, $subject, $message);
+}
+
+
+
+
+
 function sendMail($email, $subject, $message)
 {
     $to = $email;
@@ -40,8 +55,6 @@ function getVideoIdFromYoutubeLink($video_link){
     parse_str($url['query'], $query);
     return $query['v'];
 }
-
-
 
 $container = $app->getContainer();
 $container['renderer'] = new PhpRenderer("../templates");
@@ -73,7 +86,6 @@ $app->get('/user_logout', function ($request, $response, $args) {
     return $response->withRedirect(BASE_URL . '/admin');
 });
 
-
 $app->post('/user_login', function ($request, $response, $args) {
     $parsedBody = $request->getParsedBody();
 
@@ -94,8 +106,6 @@ $app->post('/user_login', function ($request, $response, $args) {
 
 
 //Teste
-
-
 $app->get('/pagseguro_venda', function ($request, $response) {
 
     $access = [
@@ -194,20 +204,8 @@ $app->post('/pagseguro_notificacao', function ($request, $response) {
 });
 
 
-$app->get('/pagseguro_getstatus/{reference}', function ($request, $response, $args) {
-    if (isset($args['reference'])) {
-        $pagSeguro = new PagSeguro();
-        echo 'foi';
-        $p = $pagSeguro->getStatusByReference($args['reference']);
-        echo 'foi';
-        echo $pagSeguro->getStatusText($p->status);
-        echo 'foi';
-    } else {
-        echo 'Parametro não informado';
-    }
-});
 
-
+include_once 'routes/pagseguro_route.php';
 include_once 'routes/site_routes.php';
 include_once 'routes/textos_routes.php';
 include_once 'routes/aulas_routes.php';
