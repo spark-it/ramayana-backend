@@ -1,7 +1,7 @@
 <h1>Vídeos</h1>
 
 
-<a href="<?php echo $base_url ?>/forms/videos/create">Novo vídeo</a>
+<a href="<?php echo $base_url ?>/admin/videos/create">Novo vídeo</a>
 
 <table class="table table-hover">
     <thead>
@@ -25,10 +25,10 @@
             </td>
             <td>
                 <a class="btn btn-link"
-                   href="<?php echo $base_url ?>/forms/videos/edit/<?php echo $row->id ?>">Editar</a>
+                   href="<?php echo $base_url ?>/admin/videos/edit/<?php echo $row->id ?>">Editar</a>
             </td>
             <td>
-                <form action="<?php echo $base_url ?>/forms/videos/delete" method="POST"
+                <form action="<?php echo $base_url ?>/admin/videos/delete" method="POST"
                       id="postForm" enctype="multipart/form-data" onsubmit="return confirmDelete()">
                     <input type="hidden" name="id" value="<?php echo $row->id ?>"/>
                     <input type="submit" class="btn btn-link" value="Excluir"/>

@@ -3,23 +3,33 @@
 
 include_once __DIR__ . '/../models/Informe.php';
 
-
-//Get a list
-$app->get('/api/informes', function ($request, $response, $args) {
+$app->get('/admin/informes/list', function ($request, $response, $args) {
+    check_logged($response);
     $rows = Informe::all();
-    return $response->withJson($rows, 200);
+
+    $this->renderer->render($response, "/admin/head.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/informes/list.phtml", ['rows' => $rows,'base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/foot.phtml", $args);
 });
 
-//Get specific crud
-$app->get('/api/informes/{id}', function ($request, $response, $args) {
+$app->get('/admin/informes/create', function ($request, $response, $args) {
+    check_logged($response);
+
+    $this->renderer->render($response, "/admin/head.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/informes/create.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/foot.phtml", $args);
+});
+
+$app->get('/admin/informes/edit/{id}', function ($request, $response, $args) {
+    check_logged($response);
     $rows = Informe::find($args['id']);
-    return $response->withJson($rows, 200);
+
+    $this->renderer->render($response, "/admin/head.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/informes/edit.phtml", ['row' => $rows, 'base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/foot.phtml", $args);
 });
 
-
-
-
-$app->post('/api/informes', function ($request, $response, $args) {
+$app->post('/admin/informes', function ($request, $response, $args) {
     $response_code = 201;
 
     $parsedBody = $request->getParsedBody();
@@ -83,131 +93,14 @@ $app->post('/api/informes', function ($request, $response, $args) {
         }
 
         if($fromForm) {
-            return $response->withRedirect($base_url . '/forms/informes/list');
+            return $response->withRedirect($base_url . '/admin/informes/list');
         } else{
             return $response->withJson($result, 201);
         }
     }
 });
 
-$app->put('/api/informes/{id}', function ($request, $response, $args) {
-    $response_code = 201;
-    $aula = Informe::find($args['id']);
-    if (is_null($aula)) {
-        return $response->withJson(null, 200);
-    }
-
-    $title = null;
-    $text = null;
-    $description = null;
-    $image = null;
-
-    $parsedBody = $request->getParsedBody();
-    if (array_key_exists('title', $parsedBody)) {
-        $title = $parsedBody['title'];
-    }
-    if (array_key_exists('text', $parsedBody)) {
-        $text = $parsedBody['text'];
-    }
-    if (array_key_exists('description', $parsedBody)) {
-        $description = $parsedBody['description'];
-    }
-
-    $files = $request->getUploadedFiles();
-
-    if (is_array($files) && array_key_exists('image', $files)) {
-        $image = $files['image'];
-    }
-    if (is_object($image)) {
-        $directory = $this->get('settings')['upload_dir'];
-        $filename = moveUploadedFile($directory, $image);
-        $aula->image = $filename;
-    }
-
-
-    $errors = null;
-
-    if ($title == null || empty($title)) {
-        $response_code = 400;
-        $errors['errors'][] = 'Title cannot be empty';
-
-    } else if (strlen($title) < 3) {
-        $response_code = 400;
-        $errors['errors'][] = 'Title cannot have less than 3 characters';
-    } else {
-        $aula->title = $title;
-    }
-
-    if ($text == null || empty($text)) {
-        $response_code = 400;
-        $errors['errors'][] = 'Text cannot be empty';
-
-    } else if (strlen($text) < 3) {
-        $response_code = 400;
-        $errors['errors'][] = 'Text cannot have less than 3 characters';
-    } else {
-        $aula->text = $text;
-    }
-
-
-    if ($description != null) {
-        $aula->description = $description;
-    }
-
-
-    if ($response_code == 400) {
-        return $response->withJson($errors, $response_code);
-    } else {
-        error_log($aula->image);
-
-        $aula->save();
-
-        if ($aula->image != null) {
-            $base_url = $this->get('settings')['base_url'];
-            $aula->image = $base_url . '/uploads/' . $aula->image;
-        }
-
-        return $response->withJson($aula, 201);
-    }
-});
-
-$app->delete('/api/informes/{id}', function ($request, $response, $args) {
-    if (Informe::destroy($args['id'])) {
-        return $response->getBody()->write('', 200);
-    } else {
-        return $response->getBody()->write('Parâmetro não enviado', 400);
-    }
-});
-
-//Forms
-
-$app->get('/admin/informes/list', function ($request, $response, $args) {
-    check_logged($response);
-    $rows = Informe::all();
-
-    $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
-    $this->renderer->render($response, "/informes/list.phtml", ['rows' => $rows,'base_url' => BASE_URL]);
-    $this->renderer->render($response, "/foot.phtml", $args);
-});
-
-$app->get('/admin/informes/create', function ($request, $response, $args) {
-    check_logged($response);
-
-    $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
-    $this->renderer->render($response, "/informes/create.phtml", ['base_url' => BASE_URL]);
-    $this->renderer->render($response, "/foot.phtml", $args);
-});
-
-$app->get('/admin/informes/edit/{id}', function ($request, $response, $args) {
-    check_logged($response);
-    $rows = Informe::find($args['id']);
-
-    $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
-    $this->renderer->render($response, "/informes/edit.phtml", ['row' => $rows, 'base_url' => BASE_URL]);
-    $this->renderer->render($response, "/foot.phtml", $args);
-});
-
-$app->post('/api/informes/edit/{id}', function ($request, $response, $args) {
+$app->post('/admin/informes/edit/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $texto = Informe::find($args['id']);
     if (is_null($texto)) {
@@ -276,7 +169,7 @@ $app->post('/api/informes/edit/{id}', function ($request, $response, $args) {
 
 
         if ($fromForm) {
-            return $response->withRedirect($base_url . '/forms/informes/list');
+            return $response->withRedirect($base_url . '/admin/informes/list');
         } else {
             return $response->withJson($texto, 201);
         }
@@ -289,7 +182,7 @@ $app->post('/admin/informes/delete', function ($request, $response, $args) {
 
 
     if (Informe::destroy($id)) {
-        return $response->withRedirect(BASE_URL . '/forms/informes/list');
+        return $response->withRedirect(BASE_URL . '/admin/informes/list');
     } else {
         return $response->getBody()->write('Parâmetro não enviado', 400);
     }

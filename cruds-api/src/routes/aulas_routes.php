@@ -8,17 +8,17 @@ $app->get('/admin/aulas/list', function ($request, $response, $args) {
     check_logged($response);
     $rows = Aula::all();
 
-    $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
-    $this->renderer->render($response, "/aulas/list.phtml", ['rows' => $rows,'base_url' => BASE_URL]);
-    $this->renderer->render($response, "/foot.phtml", $args);
+    $this->renderer->render($response, "/admin/head.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/aulas/list.phtml", ['rows' => $rows,'base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/foot.phtml", $args);
 });
 
 $app->get('/admin/aulas/create', function ($request, $response, $args) {
     check_logged($response);
 
-    $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
-    $this->renderer->render($response, "/aulas/create.phtml", ['base_url' => BASE_URL]);
-    $this->renderer->render($response, "/foot.phtml", $args);
+    $this->renderer->render($response, "/admin/head.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/aulas/create.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/foot.phtml", $args);
 });
 
 $app->get('/admin/aulas/edit/{id}', function ($request, $response, $args) {
@@ -26,12 +26,81 @@ $app->get('/admin/aulas/edit/{id}', function ($request, $response, $args) {
 
     $rows = Aula::find($args['id']);
 
-    $this->renderer->render($response, "/head.phtml", ['base_url' => BASE_URL]);
-    $this->renderer->render($response, "/aulas/edit.phtml", ['row' => $rows, 'base_url' => BASE_URL]);
-    $this->renderer->render($response, "/foot.phtml", $args);
+    $this->renderer->render($response, "/admin/head.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/aulas/edit.phtml", ['row' => $rows, 'base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/foot.phtml", $args);
 });
 
-$app->post('/api/edit/{id}', function ($request, $response, $args) {
+$app->post('/admin/aulas', function ($request, $response, $args) {
+    $response_code = 201;
+
+    $parsedBody = $request->getParsedBody();
+    $title = $parsedBody['title'];
+    $description = $parsedBody['description'];
+    $text = $parsedBody['text'];
+
+    $files = $request->getUploadedFiles();
+    $image = $files['image'];
+
+    $fromForm = $parsedBody['fromForm'];
+
+    $errors = null;
+
+    if ($title == null || empty($title)) {
+        $response_code = 400;
+        $errors['errors'][] = 'Title cannot be empty';
+
+    } else if (strlen($title) < 3) {
+        $response_code = 400;
+        $errors['errors'][] = 'Title cannot have less than 3 characters';
+    }
+
+    if ($text == null || empty($text)) {
+        $response_code = 400;
+        $errors['errors'][] = 'Text cannot be empty';
+
+    } else if (strlen($text) < 3) {
+        $response_code = 400;
+        $errors['errors'][] = 'Text cannot have less than 3 characters';
+    }
+
+
+    $data = array(
+        'title' => $title,
+        'text' => $text
+    );
+
+
+    if ($description != null) {
+        $data['description'] = $description;
+    }
+
+
+    if (is_object($image) && !empty($image->file) ) {
+        $directory = $this->get('settings')['upload_dir'];
+        $filename = moveUploadedFile($directory, $image);
+        $image = $filename;
+        $data['image'] = $image;
+    }
+
+
+    if ($response_code == 400) {
+        return $response->withJson($errors, $response_code);
+    } else {
+        $result = Aula::create($data);
+
+        $base_url = $this->get('settings')['base_url'];
+        $result->image = $base_url . '/uploads/' . $result->image;
+
+        if($fromForm){
+            return $response->withRedirect($base_url . '/admin/aulas/list');
+        } else {
+            return $response->withJson($result, 201);
+        }
+    }
+});
+
+$app->post('/admin/aulas/edit/{id}', function ($request, $response, $args) {
     $response_code = 201;
     $texto = Aula::find($args['id']);
     if (is_null($texto)) {
@@ -100,191 +169,20 @@ $app->post('/api/edit/{id}', function ($request, $response, $args) {
 
 
         if ($fromForm) {
-            return $response->withRedirect($base_url . '/forms/aulas/list');
+            return $response->withRedirect($base_url . '/admin/aulas/list');
         } else {
             return $response->withJson($texto, 201);
         }
     }
 });
 
-
-
-$app->get('/api/aulas', function ($request, $response, $args) {
-    $rows = Aula::all();
-    return $response->withJson($rows, 200);
-});
-
-//Get specific crud
-$app->get('/api/aulas/{id}', function ($request, $response, $args) {
-    $rows = Aula::find($args['id']);
-    return $response->withJson($rows, 200);
-});
-
-$app->post('/api/aulas', function ($request, $response, $args) {
-    $response_code = 201;
-
-    $parsedBody = $request->getParsedBody();
-    $title = $parsedBody['title'];
-    $description = $parsedBody['description'];
-    $text = $parsedBody['text'];
-
-    $files = $request->getUploadedFiles();
-    $image = $files['image'];
-
-    $fromForm = $parsedBody['fromForm'];
-
-    $errors = null;
-
-    if ($title == null || empty($title)) {
-        $response_code = 400;
-        $errors['errors'][] = 'Title cannot be empty';
-
-    } else if (strlen($title) < 3) {
-        $response_code = 400;
-        $errors['errors'][] = 'Title cannot have less than 3 characters';
-    }
-
-    if ($text == null || empty($text)) {
-        $response_code = 400;
-        $errors['errors'][] = 'Text cannot be empty';
-
-    } else if (strlen($text) < 3) {
-        $response_code = 400;
-        $errors['errors'][] = 'Text cannot have less than 3 characters';
-    }
-
-
-    $data = array(
-        'title' => $title,
-        'text' => $text
-    );
-
-
-    if ($description != null) {
-        $data['description'] = $description;
-    }
-
-
-    if (is_object($image) && !empty($image->file) ) {
-        $directory = $this->get('settings')['upload_dir'];
-        $filename = moveUploadedFile($directory, $image);
-        $image = $filename;
-        $data['image'] = $image;
-    }
-
-
-    if ($response_code == 400) {
-        return $response->withJson($errors, $response_code);
-    } else {
-        $result = Aula::create($data);
-
-        $base_url = $this->get('settings')['base_url'];
-        $result->image = $base_url . '/uploads/' . $result->image;
-
-        if($fromForm){
-            return $response->withRedirect($base_url . '/forms/aulas/list'); 
-        } else {
-            return $response->withJson($result, 201);    
-        }
-    }
-});
-
-$app->put('/api/aulas/{id}', function ($request, $response, $args) {
-    $response_code = 201;
-    $aula = Aula::find($args['id']);
-    if (is_null($aula)) {
-        return $response->withJson(null, 200);
-    }
-
-    $title = null;
-    $text = null;
-    $description = null;
-    $image = null;
-
-    $parsedBody = $request->getParsedBody();
-    if (array_key_exists('title', $parsedBody)) {
-        $title = $parsedBody['title'];
-    }
-    if (array_key_exists('text', $parsedBody)) {
-        $text = $parsedBody['text'];
-    }
-    if (array_key_exists('description', $parsedBody)) {
-        $description = $parsedBody['description'];
-    }
-
-    $files = $request->getUploadedFiles();
-
-    if (is_array($files) && array_key_exists('image', $files)) {
-        $image = $files['image'];
-    }
-    if (is_object($image)) {
-        $directory = $this->get('settings')['upload_dir'];
-        $filename = moveUploadedFile($directory, $image);
-        $aula->image = $filename;
-    }
-
-
-    $errors = null;
-
-    if ($title == null || empty($title)) {
-        $response_code = 400;
-        $errors['errors'][] = 'Title cannot be empty';
-
-    } else if (strlen($title) < 3) {
-        $response_code = 400;
-        $errors['errors'][] = 'Title cannot have less than 3 characters';
-    } else {
-        $aula->title = $title;
-    }
-
-    if ($text == null || empty($text)) {
-        $response_code = 400;
-        $errors['errors'][] = 'Text cannot be empty';
-
-    } else if (strlen($text) < 3) {
-        $response_code = 400;
-        $errors['errors'][] = 'Text cannot have less than 3 characters';
-    } else {
-        $aula->text = $text;
-    }
-
-
-    if ($description != null) {
-        $aula->description = $description;
-    }
-
-
-    if ($response_code == 400) {
-        return $response->withJson($errors, $response_code);
-    } else {
-        error_log($aula->image);
-
-        $aula->save();
-
-        if ($aula->image != null) {
-            $base_url = $this->get('settings')['base_url'];
-            $aula->image = $base_url . '/uploads/' . $aula->image;
-        }
-
-        return $response->withJson($aula, 201);
-    }
-});
-
-$app->delete('/api/aulas/{id}', function ($request, $response, $args) {
-    if (Aula::destroy($args['id'])) {
-        return $response->getBody()->write('', 200);
-    } else {
-        return $response->getBody()->write('Parâmetro não enviado', 400);
-    }
-});
-
-$app->post('/api/aulas/delete', function ($request, $response, $args) {
+$app->post('/admin/aulas/delete', function ($request, $response, $args) {
     $parsedBody = $request->getParsedBody();
     $id = $parsedBody['id'];
 
 
     if (Aula::destroy($id)) {
-        return $response->withRedirect(BASE_URL . '/forms/aulas/list');
+        return $response->withRedirect(BASE_URL . '/admin/aulas/list');
     } else {
         return $response->getBody()->write('Parâmetro não enviado', 400);
     }

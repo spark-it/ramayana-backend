@@ -78,15 +78,15 @@ function check_logged($response)
 
 
 $app->get('/admin', function ($request, $response, $args) {
-    $this->renderer->render($response, "/login.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/login.phtml", ['base_url' => BASE_URL]);
 });
 
-$app->get('/user_logout', function ($request, $response, $args) {
+$app->get('/admin/user_logout', function ($request, $response, $args) {
     unset($_SESSION['is_logged']);
     return $response->withRedirect(BASE_URL . '/admin');
 });
 
-$app->post('/user_login', function ($request, $response, $args) {
+$app->post('/admin/user_login', function ($request, $response, $args) {
     $parsedBody = $request->getParsedBody();
 
     $email = $parsedBody['email'];
@@ -98,7 +98,7 @@ $app->post('/user_login', function ($request, $response, $args) {
         $_SESSION['is_logged'] = true;
 
 
-        return $response->withRedirect(BASE_URL . '/forms/textos/list');
+        return $response->withRedirect(BASE_URL . '/admin/textos/list');
     } else {
         return $response->withRedirect(BASE_URL . '/admin');
     }

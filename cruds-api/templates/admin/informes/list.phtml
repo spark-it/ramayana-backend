@@ -1,7 +1,7 @@
 <h1>Informes</h1>
 
 
-<a href="<?php echo $base_url?>/forms/informes/create">Novo informe</a>
+<a href="<?php echo $base_url?>/admin/informes/create">Novo informe</a>
 
 <table class="table table-hover">
     <thead>
@@ -18,10 +18,10 @@
             <td><?php echo $row->title ?></td>
             <td><?php echo $row->text ?></td>
             <td>
-                <a class="btn btn-link" href="<?php echo $base_url?>/forms/informes/edit/<?php echo $row->id?>">Editar</a>
+                <a class="btn btn-link" href="<?php echo $base_url?>/admin/informes/edit/<?php echo $row->id?>">Editar</a>
             </td>
             <td>
-                <form action="<?php echo $base_url ?>/forms/informes/delete" method="POST"
+                <form action="<?php echo $base_url ?>/admin/informes/delete" method="POST"
                       id="postForm" enctype="multipart/form-data" onsubmit="return confirmDelete()">
                     <input type="hidden" name="id" value="<?php echo $row->id ?>"/>
                     <input type="submit" class="btn btn-link" value="Excluir"/>
