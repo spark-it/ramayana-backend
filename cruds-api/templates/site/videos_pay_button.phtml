@@ -25,10 +25,10 @@
                         <div class="col-md-12">
 
                             <!-- Post Item Start -->
-                            <div class="post-item">
+                            <div class="post-item" style="text-align: center !important;">
                                 <div class="text">
                                     Para acessar os videos é necessário fazer o pagamento.
-                                    <div class="checkout-button" style="text-align: left !important;">
+                                    <div class="checkout-button">
                                         <a href="#" onclick="openLightBox('<?php echo $xml->code; ?>')">Pague aqui com o PagSeguro</a>
                                     </div>
                                 </div>
@@ -68,7 +68,8 @@
             code: code
         },{
             success : function(transactionCode) {
-                alert('Aguarde enquanto seu pagamento é processado.')
+                alert('Aguarde enquanto seu pagamento é processado.');
+                location.reload(true);
 //                window.location = "<?php //echo $base_url?>///pagseguro/payment_status/"+transactionCode;
             },
             abort : function() {

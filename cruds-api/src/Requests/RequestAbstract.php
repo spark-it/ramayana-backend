@@ -15,10 +15,18 @@ abstract class RequestAbstract implements RequestInterface
     public function getUrl(Order $order, $sandbox = null)
     {
         if ($sandbox) {
-            return $this->getChildConstants('url_sandbox')  . (string)$order;
+            return $this->getChildConstants('url_sandbox') . (string)$order;
 //            return PagSeguro::URL_SANDBOX . '?' . (string)$order;
         }
-        return $this->getChildConstants('url') . '?' . (string)$order;
+
+        if (!strpos($this->getChildConstants('url'), 'notification')) {
+            return $this->getChildConstants('url') . '?' . (string)$order;
+        } else {
+            return $this->getChildConstants('url') . (string)$order;
+        }
+
+
+
 //        return PagSeguro::URL . '?' . (string)$order;
     }
 

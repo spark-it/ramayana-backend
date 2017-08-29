@@ -189,7 +189,7 @@ $app->get('/videos', function ($request, $response, $args) {
 
                     $access = [
                         'email' => 'professorramayana@gmail.com',
-                        'token' => '6C461B67BD034EE8A9B1BA64E40F744D',
+                        'token' => '3877C0360E424D028FAEF707F5A32D40',
                         'currency' => 'BRL',
                         'reference' => $user->transaction_ref
                     ];
@@ -207,7 +207,7 @@ $app->get('/videos', function ($request, $response, $args) {
                     $pag_seguro->addProduct(1, $user->transaction_product, $user->transaction_value, 1);
 
                     //Request
-                    $responsePagSeguro = (new BrPayments\MakeRequest($pag_seguro_request))->make($pag_seguro, true);
+                    $responsePagSeguro = (new BrPayments\MakeRequest($pag_seguro_request))->make($pag_seguro);
 
                     $xml = new \SimpleXMLElement((string)$responsePagSeguro);
 

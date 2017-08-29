@@ -10,8 +10,8 @@ include_once 'RequestAbstract.php';
 
 class PagSeguro extends RequestAbstract
 {
-    const URL = 'https://ws.pagseguro.uol.com.br/v2/checkout?';
-    const URL_SANDBOX = 'https://ws.sandbox.pagseguro.uol.com.br/v2/checkout?';
+    const URL = 'https://ws.pagseguro.uol.com.br/v2/checkout';
+    const URL_SANDBOX = 'https://ws.sandbox.pagseguro.uol.com.br/v2/checkout';
     const METHOD = 'POST';
 
     const URL_FINAL = 'https://pagseguro.uol.com.br/v2/checkout/payment.html';
