@@ -16,31 +16,21 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="table-text table-responsive">
-                    <table class="table table-bordered table-responsive">
-                        <thead>
-                        <tr>
-                            <th class="product-name">Título</th>
-                            <th class="product-name">Descrição</th>
-                        </tr>
-                        </thead>
+              <ul class="blog-listitem">
+                  <?php foreach ($textos as $texto): ?>
+                      <li class="blog-listitens">
+                          <a href="<?php echo $base_url . '/textos/' . $texto->id?>">
+                            <h3 class="product-name">
+                              <?php echo $texto->title ?>
+                            </h3>
+                            <p class="product-name">
+                                <?php echo $texto->description ?>
+                            </p>
+                          </a>
+                      </li>
+                  <?php endforeach; ?>
+              </ul>
 
-                        <tbody>
-                        <?php foreach ($textos as $texto): ?>
-                            <tr>
-                                <td class="product-name">
-                                    <a href="<?php echo $base_url . '/textos/' . $texto->id?>">
-                                        <?php echo $texto->title ?>
-                                    </a>
-                                </td>
-                                <td class="product-name">
-                                    <p><?php echo $texto->description ?></p>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
             </div>
 
         </div>
