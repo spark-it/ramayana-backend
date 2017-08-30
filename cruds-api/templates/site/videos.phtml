@@ -15,34 +15,87 @@
 
 <!-- Blog Start -->
 <section class="blog">
+
+    <div class="video-content" style="margin: 2em 10%">
+        <a name="pague_video">
+            <iframe width="100%" height="500" src="https://www.youtube.com/embed/DET2y5UH1oU" frameborder="0"
+                    allowfullscreen></iframe>
+        </a>
+    </div>
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+
                 <!-- Blog Classic Start -->
                 <div class="blog-grid">
                     <div class="row">
                         <div class="col-md-12">
+
+
                             <!-- Post Item Start -->
-                            <div class="post-item">
-                                <div class="text">
-                                    <div class="fb-login-button" data-max-rows="1" data-size="large"
-                                         data-button-type="login_with" data-show-faces="false"
-                                         data-auto-logout-link="true" data-use-continue-as="true"
-                                         onlogin="checkLoginState();"></div>
-                                </div>
+                            <div class="post-item" style="text-align: center !important;">
+                                <div class="fb-login-button" data-max-rows="1" data-size="large"
+                                     data-button-type="login_with" data-show-faces="false"
+                                     data-auto-logout-link="true" data-use-continue-as="true"
+                                     onlogin="checkLoginState();"></div>
                             </div>
                             <!-- Post Item End -->
+
                         </div>
                     </div>
                 </div>
                 <!-- Blog Classic End -->
+
+
+                <!-- gallery  Start -->
+                <div class="gallery-area-area  padding-tp-70-bt-50">
+                    <div class="container">
+                        <div class="row">
+                            <?php foreach ($videos as $video): ?>
+                                <div class="col-md-6 col-sm-6">
+                                    <h3><?php echo $video->title ?></h3>
+                                    <div class="course-gallery margin-bottom-30 gallery-item">
+                                        <img width="555" height="312" src="<?php echo $base_url?>/uploads/<?php echo $video->thumb?>"
+                                             alt=""/>
+                                        <div class="gallery-img-overlay"></div>
+                                        <div class="gallery-overlay">
+                                            <div class="gallery-item-text">
+                                                <a href="#pague_video">
+                                                    <img src="<?php echo $assets_base ?>img/lock.svg"
+                                                         style="width: 60%">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+                <!-- gallery End -->
+
+                <!-- Author Box Start -->
+                <div class="author-box">
+                    <div class="inner">
+                        <div class="author-thumb">
+                            <img src="<?php echo $assets_base ?>img/marcos-ramayana.jpg" alt="">
+                        </div>
+                        <div class="author-info">
+                            <h3>Dr. Marcos Ramayana</h3>
+                            <p>
+                                Procurador de Justiça do Ministério Público do Estado do Rio de Janeiro.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Author Box End -->
             </div>
         </div>
     </div>
 </section>
 <!-- Blog End -->
-
-<script type="text/javascript">
+<script>
     function checkLoginState() {
         FB.getLoginStatus(function (response) {
             if (response.status === 'connected') {
@@ -60,5 +113,20 @@
         if (document.readyState === "complete") {
             checkLoginState();
         }
+    }
+
+    function openLightBox(code) {
+        PagSeguroLightbox({
+            code: code
+        }, {
+            success: function (transactionCode) {
+                alert('Aguarde enquanto seu pagamento é processado.');
+                location.reload(true);
+//                window.location = "<?php //echo $base_url?>///pagseguro/payment_status/"+transactionCode;
+            },
+            abort: function () {
+
+            }
+        })
     }
 </script>

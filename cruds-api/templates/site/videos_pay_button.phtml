@@ -8,6 +8,13 @@
                     Vídeos
                 </span>
             </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12" style="text-align: right !important;">
+                <div class="fb-login-button" data-max-rows="1" data-size="large"
+                     data-button-type="login_with" data-show-faces="false"
+                     data-auto-logout-link="true" data-use-continue-as="true"
+                     onlogin="checkLoginState();"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -15,6 +22,14 @@
 
 <!-- Blog Start -->
 <section class="blog">
+
+    <div class="video-content" style="margin: 2em 10%">
+        <a name="pague_video">
+            <iframe width="100%" height="500" src="https://www.youtube.com/embed/DET2y5UH1oU" frameborder="0"
+                    allowfullscreen></iframe>
+        </a>
+    </div>
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -27,52 +42,88 @@
                             <!-- Post Item Start -->
                             <div class="post-item" style="text-align: center !important;">
                                 <div class="text">
-                                    Para acessar os videos é necessário fazer o pagamento.
+                                    <p>Selecionamos diversos temas relevantes do <strong>Direito Eleitoral.</strong></p>
+
+                                    <p>As aulas em vídeo são de tempo reduzido, em média, 10 (dez) minutos.</p>
+
+                                    <p>O tempo de acesso ao conteúdo completo das aulas em vídeo é de <strong>3 (três) meses</strong>, após é necessária nova aquisição.</p>
+
+                                    <p>O investimento pelo período de tempo de: <strong>3 (três) meses</strong>.</p>
+
+                                    <p>O valor é de: <strong>R$ 30.00</strong></p>
                                     <div class="checkout-button">
-                                        <a href="#" onclick="openLightBox('<?php echo $xml->code; ?>')">Pague aqui com o PagSeguro</a>
+                                        <a href="#" name="pague" onclick="openLightBox('<?php echo $xml->code; ?>')">Pague
+                                            aqui com o
+                                            PagSeguro</a>
                                     </div>
                                 </div>
                             </div>
                             <!-- Post Item End -->
 
                         </div>
-
                     </div>
                 </div>
                 <!-- Blog Classic End -->
 
 
-                <!-- Author Box Start -->
-                <div class="author-box">
-                    <div class="inner">
-                        <div class="author-thumb">
-                            <img src="<?php echo $assets_base ?>img/marcos-ramayana.jpg" alt="">
-                        </div>
-                        <div class="author-info">
-                            <h3>Dr. Marcos Ramayana</h3>
-                            <p>
-                                Procurador de Justiça do Ministério Público do Estado do Rio de Janeiro.
-                            </p>
+                <!-- gallery  Start -->
+                <div class="gallery-area-area  padding-tp-70-bt-50">
+                    <div class="container">
+                        <div class="row">
+                            <?php foreach ($videos as $video): ?>
+                                <div class="col-md-6 col-sm-6">
+                                    <h3><?php echo $video->title ?></h3>
+                                    <div class="course-gallery margin-bottom-30 gallery-item">
+                                        <img width="555" height="312" src="<?php echo $base_url?>/uploads/<?php echo $video->thumb?>"
+                                             alt=""/>
+                                        <div class="gallery-img-overlay"></div>
+                                        <div class="gallery-overlay">
+                                            <div class="gallery-item-text">
+                                                <a href="#pague_video">
+                                                    <img src="<?php echo $assets_base ?>img/lock.svg"
+                                                         style="width: 60%">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
-                <!-- Author Box End -->
+                <!-- gallery End -->
+
+
             </div>
         </div>
     </div>
 </section>
 <!-- Blog End -->
 <script>
-    function openLightBox(code){
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            if (response.status !== 'connected') {
+                window.location = "<?php echo BASE_URL?>/logout";
+            }
+        });
+    }
+
+    document.onreadystatechange = function () {
+        if (document.readyState === "complete") {
+            checkLoginState();
+        }
+    }
+
+    function openLightBox(code) {
         PagSeguroLightbox({
             code: code
-        },{
-            success : function(transactionCode) {
+        }, {
+            success: function (transactionCode) {
                 alert('Aguarde enquanto seu pagamento é processado.');
                 location.reload(true);
 //                window.location = "<?php //echo $base_url?>///pagseguro/payment_status/"+transactionCode;
             },
-            abort : function() {
+            abort: function () {
 
             }
         })
