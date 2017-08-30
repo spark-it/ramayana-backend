@@ -1,0 +1,38 @@
+Site Professor Ramayana - Instruções
+Mayck Xavier <mayckxavier@lab01.com.br>
+
+1 - O projeto se encontra instalado em uma instância do Lightsail, na Amazon.
+    Para acessar, basta entrar com os dados:
+    URL: https://lightsail.aws.amazon.com
+    Usuário: professorramayana@gmail.com
+    Senha: ramay1234
+1.1 - Essa instância tem Apache, Php e MySql instalados.
+1.2 - Para acessar o terminal da instância pelo navegador, basta se logar no LightSail, selecionar a instância e na tela da instância, clicar no grande botão escrito Connect using SSH (imagem1.png). Caso seja necessário conectar via terminal externo, basta seguir as instruções no link https://lightsail.aws.amazon.com/ls/docs/how-to/article/lightsail-how-to-set-up-putty-to-connect-using-ssh
+
+Banco de Dados
+1 - Para acessar o banco de dados, após conectar no servidor (por terminal, seja por navegador ou software), utilize o comando $mysql -u root -p
+2 - A senha do banco de dados se encontra dentro do arquivo de texto bitnami_application_password que se encontra dentro do diretório raiz do servidor.
+
+
+Software Web
+
+1 - O software web é desenvolvido com Php e MySql;
+2 - O framework utilizado para o desenvolvimento do mesmo é o Slim Framework versão 3 (A escolha do Slim foi feita por que inicialmente fariamos apenas as APIs nele. No final, fizemos o site inteiro e seria contra producente mudar de framework);
+3 - Foi utilizado o Eloquent como ferramenta ORM;
+4 - Foi utilizado o Composer para gerenciar as dependências do projeto;
+
+Configuração do projeto:
+1 - A configuração do banco de dados se encontra no arquivo src/dependencies.php
+2 - As configurações gerais estão no arquivo src/settings.php
+3 - O diretório templates contém todos os arquivos html (no padrão .phtml) do projeto. Dentro do mesmo existem dois diretórios: admin, para html do admin e site para html do site
+4 - Dentro do diretório routes estão os arquivos de rotas; Ao adicionar uma rota, não esquecer de fazer seu include no arquivo routes.php;
+5 - O diretório model contém os models do projeto;
+6 - Os arquivo src/MakeRequest.php e src/OrderInterface.php, assim como os diretórios src/Notifications, src/Payments, src/Request e seus conteúdos são necessários para a comunicação com o PagSeguro.
+7 - Para configurar o projeto em algum servidor ou plataforma de desenvolvimento (MAMP, XAMPP ou outro), deve-se apontar para o index.php que está dentro do diretório public;
+8 - É necessário utilizar o composer para instalar as dependências do projeto. Basta baixar o composer em https://getcomposer.org/
+9 - Após baixar, é necessário usar o comando $php composer.phar install.
+
+
+
+Para acessar a área de admin do site, basta acessar sua url/admin no navegador. Exemplo: http://professorranayama.com/admin
+
