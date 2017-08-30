@@ -3,7 +3,6 @@
 use Slim\Views\PhpRenderer;
 
 
-
 include_once __DIR__ . '/models/Usuario.php';
 include_once __DIR__ . '/Payments/PagSeguro.php';
 include_once __DIR__ . '/Requests/PagSeguro.php';
@@ -36,9 +35,6 @@ function sendPaymentConfirmationEmail($usuario)
 }
 
 
-
-
-
 function sendMail($email, $subject, $message)
 {
     $to = $email;
@@ -49,12 +45,26 @@ function sendMail($email, $subject, $message)
     return mail($to, $subject, $message, $headers);
 }
 
-function getVideoIdFromYoutubeLink($video_link){
+function getVideoIdFromYoutubeLink($video_link)
+{
     $subject = $video_link;
     $url = parse_url($subject);
     parse_str($url['query'], $query);
     return $query['v'];
 }
+
+function downloadYoutubeThumb($directory, $url)
+{
+    $content = file_get_contents($url);
+    $thumb_name = uniqid('yt-thumb', true) . '.jpg';
+    $fp = fopen($directory . '/' . $thumb_name, "w");
+    fwrite($fp, $content);
+    fclose($fp);
+
+    return $thumb_name;
+
+}
+
 
 $container = $app->getContainer();
 $container['renderer'] = new PhpRenderer("../templates");
@@ -147,7 +157,7 @@ $app->get('/pagseguro_venda', function ($request, $response) {
     );
 
 
-    $pag_seguro->addProduct(1, 'Videos Ramayana', 40.00, 1);
+    $pag_seguro->addProduct(1, 'Videos Ramayana', 30.00, 1);
 
 
     //Request
@@ -202,7 +212,6 @@ $app->post('/pagseguro_notificacao', function ($request, $response) {
         var_dump($parsedBody);
     }
 });
-
 
 
 include_once 'routes/pagseguro_route.php';
