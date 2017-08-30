@@ -22,6 +22,7 @@ $app->get('/', function ($request, $response, $args) {
     $this->renderer->render($response, "/site/index.phtml",
         [
             'assets_base' => BASE_URL . '/assets/',
+            'base_url' => BASE_URL,
             'video_count' => Video::count(),
             'aula_count' => Aula::count(),
             'texto_count' => Texto::count(),
@@ -42,6 +43,7 @@ $app->get('/aulas', function ($request, $response, $args) {
     ]);
     $this->renderer->render($response, "/site/aulas_list.phtml", [
         'assets_base' => BASE_URL . '/assets/',
+        'base_url' => BASE_URL,
         'aulas' => $aulas
     ]);
     $this->renderer->render($response, "/site/footer.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL,]);
@@ -57,6 +59,7 @@ $app->get('/aulas/{aula_id}', function ($request, $response, $args) {
     ]);
     $this->renderer->render($response, "/site/aulas.phtml", [
         'assets_base' => BASE_URL . '/assets/',
+        'base_url' => BASE_URL,
         'aula' => $aula
     ]);
     $this->renderer->render($response, "/site/footer.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL]);
@@ -132,8 +135,18 @@ $app->get('/videos', function ($request, $response, $args) {
     if (isset($_SESSION['user'])) {
         $user = $_SESSION['user'];
 
-        if(isset($user->id)){
+
+        error_log('1 - user: ' . json_encode($user));
+        error_log( "\n\n");
+
+
+        if (isset($user->id)) {
             $temp_user = Usuario::find($user->id);
+
+
+            error_log('2 - temp_user: ' . json_encode($temp_user));
+            error_log( "\n\n");
+
             $user->access_expiration_date = $temp_user->access_expiration_date;
         }
 
@@ -165,15 +178,29 @@ $app->get('/videos', function ($request, $response, $args) {
                 $usuario->facebook_access_token = $fb_response->getAccessToken();
                 $usuario->save();
 
+                $videos = Video::all();
+
+                //Faz download dos thumbs do youtube e armazena em disco para evitar
+                //demora no carregamento
+                //Precisa ser otimizado
+                $directory = $this->get('settings')['upload_dir'];
+                foreach ($videos as &$video){
+                    if(is_null($video->thumb)){
+                        $youtube_link = getVideoIdFromYoutubeLink($video->video_link);
+                        $video->thumb = downloadYoutubeThumb($directory,"http://img.youtube.com/vi/$youtube_link/maxresdefault.jpg");
+                        $video->save();
+                    }
+                }
+
+
                 if ($user->access_expiration_date >= date('Y-m-d')) {
-                    $videos = Video::all();
                     $this->renderer->render($response, "/site/videos_logged.phtml", ['assets_base' => BASE_URL . '/assets/', 'videos' => $videos, 'base_url' => BASE_URL]);
                 } else {
                     if (!$user->transaction_ref) {
                         $transaction = new Transacao();
                         $transaction->ref = uniqid('Ref-', true);
                         $transaction->product = 'Videos Ramayana';
-                        $transaction->value = 40.00;
+                        $transaction->value = 30.00;
                         $transaction->usuarios_id = $user->id;
                         $transaction->save();
 
@@ -213,7 +240,7 @@ $app->get('/videos', function ($request, $response, $args) {
 
                     $url = $pag_seguro_request->getUrlFinal($xml->code, true);
 
-                    $this->renderer->render($response, "/site/videos_pay_button.phtml", ['xml' => $xml, 'url' => $url, 'base_url' => BASE_URL,'assets_base' => BASE_URL . '/assets/']);
+                    $this->renderer->render($response, "/site/videos_pay_button.phtml", ['xml' => $xml, 'url' => $url, 'base_url' => BASE_URL, 'assets_base' => BASE_URL . '/assets/', 'videos' => $videos]);
 
                 }
 
@@ -241,7 +268,10 @@ $app->get('/videos', function ($request, $response, $args) {
             'base_url' => BASE_URL,
             'assets_base' => BASE_URL . '/assets/'
         ]);
-        $this->renderer->render($response, "/site/videos.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL]);
+
+        $videos = Video::all();
+
+        $this->renderer->render($response, "/site/videos.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL, 'videos' => $videos]);
         $this->renderer->render($response, "/site/footer.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL,]);
     }
 
@@ -263,7 +293,12 @@ $app->get('/videos/{accessToken}', function ($request, $response, $args) {
         $fbUser = $fb_response->getGraphUser();
 
         $new_user = false;
-        $usuario = Usuario::where('email', $fbUser['email'])->first();
+        $usuario = Usuario::where('facebook_id', $fbUser['id'])->first();
+
+
+        error_log('3 - fbUser: ' . json_encode($fbUser));
+        error_log( "\n\n");
+
 
         if ($usuario->id == null) {
             $new_user = true;
@@ -286,7 +321,7 @@ $app->get('/videos/{accessToken}', function ($request, $response, $args) {
         if ($new_user) {
             $transaction->ref = uniqid('Ref-', true);
             $transaction->product = 'Videos Ramayana';
-            $transaction->value = 40.00;
+            $transaction->value = 30.00;
             $transaction->usuarios_id = $usuario->id;
             $transaction->save();
         } else {
@@ -322,4 +357,12 @@ $app->get('/videos/{accessToken}', function ($request, $response, $args) {
 
     return $response->withRedirect(BASE_URL . '/videos');
 
+});
+
+
+$app->get('/logout', function ($request, $response) {
+    unset($_SESSION['user']);
+    session_destroy();
+
+    return $response->withRedirect(BASE_URL . '/videos');
 });
