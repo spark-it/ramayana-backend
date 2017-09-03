@@ -1,25 +1,24 @@
 <h1>Sobre</h1>
-
-
-<a href="<?php echo $base_url?>/admin/sobre/create">Novo sítio</a>
-
 <table class="table table-hover">
     <thead>
     <tr>
-        <th>Título</th>
-        <th>Texto</th>
+        <th>Campo</th>
         <th></th>
+
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($rows as $row): ?>
-        <tr>
-            <td><?php echo $row->title ?></td>
-            <td><?php echo $row->text ?></td>
-            <td>
-                <a href="<?php echo $base_url?>/admin/sobre/edit/<?php echo $row->id?>">Editar</a>
-            </td>
-        </tr>
-    <?php endforeach; ?>
+    <tr>
+        <td>Professor</td>
+        <td>
+            <a href="<?php echo $base_url ?>/admin/sobre/edit/professor">Editar</a>
+        </td>
+    </tr>
+    <tr>
+        <td>Vídeos</td>
+        <td>
+            <a href="<?php echo $base_url ?>/admin/sobre/edit/videos">Editar</a>
+        </td>
+    </tr>
     </tbody>
 </table>

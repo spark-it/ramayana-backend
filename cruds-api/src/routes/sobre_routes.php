@@ -128,6 +128,26 @@ $app->get('/admin/sobre/create', function ($request, $response, $args) {
     $this->renderer->render($response, "/admin/foot.phtml", $args);
 });
 
+
+$app->get('/admin/sobre/edit/professor', function ($request, $response, $args) {
+    check_logged($response);
+    $rows = Sobre::find(1); //Id do campo Professor
+
+    $this->renderer->render($response, "/admin/head.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/sobre/edit.phtml", ['row' => $rows, 'base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/foot.phtml", $args);
+});
+
+$app->get('/admin/sobre/edit/videos', function ($request, $response, $args) {
+    check_logged($response);
+    $rows = Sobre::find(2); //Id do campo Vídeos
+
+    $this->renderer->render($response, "/admin/head.phtml", ['base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/sobre/edit.phtml", ['row' => $rows, 'base_url' => BASE_URL]);
+    $this->renderer->render($response, "/admin/foot.phtml", $args);
+});
+
+
 $app->get('/admin/sobre/edit/{id}', function ($request, $response, $args) {
     check_logged($response);
     $rows = Sobre::find($args['id']);
@@ -216,24 +236,11 @@ $app->post('/admin/sobre/edit/{id}', function ($request, $response, $args) {
     }
 
     $parsedBody = $request->getParsedBody();
-    $title = $parsedBody['title'];
-    $description = $parsedBody['description'];
     $text = $parsedBody['text'];
 
     $fromForm = $parsedBody['fromForm'];
 
     $errors = null;
-
-    if ($title == null || empty($title)) {
-        $response_code = 400;
-        $errors['errors'][] = 'Title cannot be empty';
-
-    } else if (strlen($title) < 3) {
-        $response_code = 400;
-        $errors['errors'][] = 'Title cannot have less than 3 characters';
-    } else {
-        $texto->title = $title;
-    }
 
     if ($text == null || empty($text)) {
         $response_code = 400;
@@ -246,24 +253,6 @@ $app->post('/admin/sobre/edit/{id}', function ($request, $response, $args) {
         $texto->text = $text;
     }
 
-
-    if ($description != null) {
-        $texto->description = $description;
-    }
-
-
-    $image = null;
-    $files = $request->getUploadedFiles();
-
-
-    if (is_array($files)) {
-        $image = $files['image'];
-    }
-    if (is_object($image) && !empty($image->file)) {
-        $directory = $this->get('settings')['upload_dir'];
-        $filename = moveUploadedFile($directory, $image);
-        $texto->image = $filename;
-    }
 
     if ($response_code == 400) {
         return $response->withJson($errors, $response_code);
