@@ -9,6 +9,7 @@ include_once __DIR__ . '/../models/Informe.php';
 include_once __DIR__ . '/../models/Sitio.php';
 include_once __DIR__ . '/../models/Video.php';
 include_once __DIR__ . '/../models/Transacao.php';
+include_once __DIR__ . '/../models/Sobre.php';
 
 $app->get('/', function ($request, $response, $args) {
     $textos = Texto::query()->orderBy('created_at', 'desc')->limit(3)->get();
@@ -123,11 +124,14 @@ $app->get('/sitios', function ($request, $response, $args) {
 });
 
 $app->get('/professor', function ($request, $response, $args) {
+    $sobre = Sobre::find(1);
+
+
     $this->renderer->render($response, "/site/head.phtml", [
         'base_url' => BASE_URL,
         'assets_base' => BASE_URL . '/assets/'
     ]);
-    $this->renderer->render($response, "/site/professor.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL]);
+    $this->renderer->render($response, "/site/professor.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL, 'sobre' => $sobre]);
     $this->renderer->render($response, "/site/footer.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL,]);
 });
 
@@ -137,7 +141,7 @@ $app->get('/videos', function ($request, $response, $args) {
 
 
         error_log('1 - user: ' . json_encode($user));
-        error_log( "\n\n");
+        error_log("\n\n");
 
 
         if (isset($user->id)) {
@@ -145,7 +149,7 @@ $app->get('/videos', function ($request, $response, $args) {
 
 
             error_log('2 - temp_user: ' . json_encode($temp_user));
-            error_log( "\n\n");
+            error_log("\n\n");
 
             $user->access_expiration_date = $temp_user->access_expiration_date;
         }
@@ -158,6 +162,9 @@ $app->get('/videos', function ($request, $response, $args) {
 
         if ($user->facebook_access_token != null) {
             error_log('facebook_not_null');
+
+            $sobre = Sobre::find(2); //Pegando texto dos videos
+
             try {
                 $fb = new Facebook\Facebook(['app_id' => FACEBOOK_APP_ID, 'app_secret' => FACEBOOK_APP_SECRET, 'default_graph_version' => 'v2.10',]);
                 $fb_response = $fb->get('/me?fields=id,first_name,last_name,email', $user->facebook_access_token);
@@ -184,10 +191,10 @@ $app->get('/videos', function ($request, $response, $args) {
                 //demora no carregamento
                 //Precisa ser otimizado
                 $directory = $this->get('settings')['upload_dir'];
-                foreach ($videos as &$video){
-                    if(is_null($video->thumb)){
+                foreach ($videos as &$video) {
+                    if (is_null($video->thumb)) {
                         $youtube_link = getVideoIdFromYoutubeLink($video->video_link);
-                        $video->thumb = downloadYoutubeThumb($directory,"http://img.youtube.com/vi/$youtube_link/maxresdefault.jpg");
+                        $video->thumb = downloadYoutubeThumb($directory, "http://img.youtube.com/vi/$youtube_link/maxresdefault.jpg");
                         $video->save();
                     }
                 }
@@ -240,16 +247,16 @@ $app->get('/videos', function ($request, $response, $args) {
 
                     $url = $pag_seguro_request->getUrlFinal($xml->code, true);
 
-                    $this->renderer->render($response, "/site/videos_pay_button.phtml", ['xml' => $xml, 'url' => $url, 'base_url' => BASE_URL, 'assets_base' => BASE_URL . '/assets/', 'videos' => $videos]);
+                    $this->renderer->render($response, "/site/videos_pay_button.phtml", ['xml' => $xml, 'url' => $url, 'base_url' => BASE_URL, 'assets_base' => BASE_URL . '/assets/', 'videos' => $videos, 'sobre' => $sobre]);
 
                 }
 
             } catch (Facebook\Exceptions\FacebookResponseException $e) {
                 error_log('Graph returned an error: ' . $e->getMessage());
-                $this->renderer->render($response, "/site/videos.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL]);
+                $this->renderer->render($response, "/site/videos.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL, 'sobre' => $sobre]);
             } catch (Facebook\Exceptions\FacebookSDKException $e) {
                 error_log('Facebook SDK returned an error: ' . $e->getMessage());
-                $this->renderer->render($response, "/site/videos.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL]);
+                $this->renderer->render($response, "/site/videos.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL, 'sobre' => $sobre]);
             }
             $this->renderer->render($response, "/site/footer.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL,]);
         } else {
@@ -258,7 +265,8 @@ $app->get('/videos', function ($request, $response, $args) {
                 'base_url' => BASE_URL,
                 'assets_base' => BASE_URL . '/assets/'
             ]);
-            $this->renderer->render($response, "/site/videos.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL]);
+            $sobre = Sobre::find(2);
+            $this->renderer->render($response, "/site/videos.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL, 'sobre' => $sobre]);
             $this->renderer->render($response, "/site/footer.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL,]);
         }
 
@@ -270,8 +278,8 @@ $app->get('/videos', function ($request, $response, $args) {
         ]);
 
         $videos = Video::all();
-
-        $this->renderer->render($response, "/site/videos.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL, 'videos' => $videos]);
+        $sobre = Sobre::find(2);
+        $this->renderer->render($response, "/site/videos.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL, 'videos' => $videos, 'sobre' => $sobre]);
         $this->renderer->render($response, "/site/footer.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL,]);
     }
 
@@ -297,7 +305,7 @@ $app->get('/videos/{accessToken}', function ($request, $response, $args) {
 
 
         error_log('3 - fbUser: ' . json_encode($fbUser));
-        error_log( "\n\n");
+        error_log("\n\n");
 
 
         if ($usuario->id == null) {
