@@ -36,7 +36,7 @@ $app->get('/', function ($request, $response, $args) {
 });
 
 $app->get('/aulas', function ($request, $response, $args) {
-    $aulas = Aula::all();
+    $aulas = Aula::orderBy('created_at','desc')->get();
 
     $this->renderer->render($response, "/site/head.phtml", [
         'base_url' => BASE_URL,
@@ -67,7 +67,7 @@ $app->get('/aulas/{aula_id}', function ($request, $response, $args) {
 });
 
 $app->get('/textos', function ($request, $response, $args) {
-    $textos = Texto::all();
+    $textos = Texto::orderBy('created_at','desc')->get();
 
     $this->renderer->render($response, "/site/head.phtml", [
         'base_url' => BASE_URL,
@@ -90,7 +90,7 @@ $app->get('/textos/{texto_id}', function ($request, $response, $args) {
 });
 
 $app->get('/informes', function ($request, $response, $args) {
-    $informes = Informe::all();
+    $informes = Informe::orderBy('created_at','desc')->get();
 
     $this->renderer->render($response, "/site/head.phtml", [
         'base_url' => BASE_URL,
@@ -185,7 +185,7 @@ $app->get('/videos', function ($request, $response, $args) {
                 $usuario->facebook_access_token = $fb_response->getAccessToken();
                 $usuario->save();
 
-                $videos = Video::all();
+                $videos = Video::orderBy('created_at','desc')->get();
 
                 //Faz download dos thumbs do youtube e armazena em disco para evitar
                 //demora no carregamento
@@ -277,7 +277,7 @@ $app->get('/videos', function ($request, $response, $args) {
             'assets_base' => BASE_URL . '/assets/'
         ]);
 
-        $videos = Video::all();
+        $videos = Video::orderBy('created_at','desc')->get();
         $sobre = Sobre::find(2);
         $this->renderer->render($response, "/site/videos.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL, 'videos' => $videos, 'sobre' => $sobre]);
         $this->renderer->render($response, "/site/footer.phtml", ['assets_base' => BASE_URL . '/assets/', 'base_url' => BASE_URL,]);
