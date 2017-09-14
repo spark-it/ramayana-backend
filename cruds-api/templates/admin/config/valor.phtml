@@ -1,0 +1,31 @@
+<h1>Editar Valor</h1>
+
+<h4>
+    <a href="<?php echo $base_url ?>/admin/config/list">Voltar</a>
+</h4>
+
+<?php if($error != null):?>
+    <div class="alert alert-danger" role="alert">
+        <?php echo $error;?>
+    </div>
+<?php endif;?>
+
+
+<form action="<?php echo $base_url ?>/admin/config/edit_valor/<?php echo $row->id ?>" method="POST" id="postForm"
+      enctype="multipart/form-data">
+    <input type="hidden" name="fromForm" value="true">
+
+    <div class="form-group">
+        <label for="text">Valor:</label> <br/>
+        <input type="text" class="form-control" name="value" id="value"
+               value="<?php echo $row->value ?>">
+
+    </div>
+
+    <button type="submit" id="submit" class="btn btn-default">Salvar</button>
+</form>
+<script>
+$(function() {
+   $('#value').maskMoney();
+ })
+</script>
