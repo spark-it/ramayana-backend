@@ -10,6 +10,7 @@ include_once __DIR__ . '/../models/Sitio.php';
 include_once __DIR__ . '/../models/Video.php';
 include_once __DIR__ . '/../models/Transacao.php';
 include_once __DIR__ . '/../models/Sobre.php';
+include_once __DIR__ . '/../models/Config.php';
 
 $app->get('/', function ($request, $response, $args) {
     $textos = Texto::query()->orderBy('created_at', 'desc')->limit(3)->get();
@@ -204,10 +205,14 @@ $app->get('/videos', function ($request, $response, $args) {
                     $this->renderer->render($response, "/site/videos_logged.phtml", ['assets_base' => BASE_URL . '/assets/', 'videos' => $videos, 'base_url' => BASE_URL]);
                 } else {
                     if (!$user->transaction_ref) {
+
+                        $config_valor = Config::find(2);
+
+
                         $transaction = new Transacao();
                         $transaction->ref = uniqid('Ref-', true);
                         $transaction->product = 'Videos Ramayana';
-                        $transaction->value = 30.00;
+                        $transaction->value = $config_valor->value;
                         $transaction->usuarios_id = $user->id;
                         $transaction->save();
 
@@ -327,9 +332,11 @@ $app->get('/videos/{accessToken}', function ($request, $response, $args) {
         $transaction = new Transacao();
 
         if ($new_user) {
+            $config_valor = Config::find(2);
+
             $transaction->ref = uniqid('Ref-', true);
             $transaction->product = 'Videos Ramayana';
-            $transaction->value = 30.00;
+            $transaction->value = $config_valor->value;
             $transaction->usuarios_id = $usuario->id;
             $transaction->save();
         } else {

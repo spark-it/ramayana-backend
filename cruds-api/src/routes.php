@@ -153,8 +153,8 @@ $app->get('/pagseguro_venda', function ($request, $response) {
         'ATA'
     );
 
-
-    $pag_seguro->addProduct(1, 'Videos Ramayana', 30.00, 1);
+    $config_valor = Config::find(2);
+    $pag_seguro->addProduct(1, 'Videos Ramayana', $config_valor->value, 1);
 
 
     //Request

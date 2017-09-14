@@ -53,8 +53,13 @@ $app->post('/pagseguro/payment_notification', function ($request, $response) {
                             $usuario = Usuario::find($transaction->usuarios_id);
 
                             if (!is_null($usuario)) {
+                                $config_acesso = Config::find(1);
+
+
+
+
                                 $lastEvent = date($xml->lastEventDate);
-                                $lastEvent = strtotime("+3 months", strtotime($lastEvent)); // returns timestamp
+                                $lastEvent = strtotime("+$config_acesso->value months", strtotime($lastEvent)); // returns timestamp
                                 $usuario->access_expiration_date = date('Y-m-d',$lastEvent);
                                 $usuario->save();
                                 sendPaymentConfirmationEmail($usuario);
