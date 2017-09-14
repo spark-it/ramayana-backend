@@ -34,8 +34,8 @@ $app->get('/admin/config/edit/valor_acesso', function ($request, $response, $arg
     $this->renderer->render($response, "/admin/foot.phtml", $args);
 });
 
-$app->post('/admin/config/edit_valor/{id}', function ($request, $response, $args) {
-    $config = Config::find($args['id']);
+$app->post('/admin/config/edit_valor', function ($request, $response, $args) {
+    $config = Config::find(2);
 
     $parsedBody = $request->getParsedBody();
 
@@ -53,19 +53,18 @@ $app->post('/admin/config/edit_valor/{id}', function ($request, $response, $args
     return $response->withRedirect(BASE_URL . '/admin/config/list');
 });
 
-$app->post('/admin/config/edit_tempo/{id}', function ($request, $response, $args) {
-    $config = Config::find($args['id']);
+$app->post('/admin/config/edit_tempo', function ($request, $response, $args) {
+    $config = Config::find(1);
 
     $parsedBody = $request->getParsedBody();
 
-    $value = $parsedBody['value'];
+    $meses = $parsedBody['meses'];
 
-    if ($value == null || empty($value) || $value == 0.00 || $value == '0.00') {
+    if ($meses == null || empty($meses)) {
         $_SESSION['error'] = 'O valor não pode estar vazio';
-        return $response->withRedirect(BASE_URL . '/admin/config/edit/valor_acesso');
+        return $response->withRedirect(BASE_URL . '/admin/config/edit/tempo_acesso');
     } else {
-        $value = floatval(str_replace(',', '', $parsedBody['value']));
-        $config->value = $value;
+        $config->value = $meses;
         $config->save();
     }
 

@@ -4,11 +4,13 @@
     <a href="<?php echo $base_url ?>/admin/config/list">Voltar</a>
 </h3>
 
-<form action="<?php echo $base_url ?>/admin/config/edit_tempo/<?php echo $row->id ?>" method="POST" id="postForm"
+<form action="<?php echo $base_url ?>/admin/config/edit_tempo" method="POST" id="postForm"
       enctype="multipart/form-data">
     <input type="hidden" name="fromForm" value="true">
-    <div class="form-group">
+    <div class="form-group" id="staticParent">
         <label for="text">Meses:</label> <br/>
+
+
         <input type="text" class="form-control" name="meses" id="meses"
                value="<?php echo $row->value ?>">
 
@@ -16,4 +18,12 @@
     <button type="submit" id="submit" class="btn btn-default">Salvar</button>
 </form>
 <script>
+    $(function () {
+        $('input[name="meses"]').keyup(function (e) {
+            if (/\D/g.test(this.value)) {
+                this.value = this.value.replace(/\D/g, '');
+            }
+        });
+
+    });
 </script>
