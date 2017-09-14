@@ -2,7 +2,6 @@
 // Routes
 use Slim\Views\PhpRenderer;
 
-
 include_once __DIR__ . '/models/Usuario.php';
 include_once __DIR__ . '/Payments/PagSeguro.php';
 include_once __DIR__ . '/Requests/PagSeguro.php';
@@ -62,7 +61,6 @@ function downloadYoutubeThumb($directory, $url)
     fclose($fp);
 
     return $thumb_name;
-
 }
 
 
@@ -117,7 +115,6 @@ $app->post('/admin/user_login', function ($request, $response, $args) {
 
 //Teste
 $app->get('/pagseguro_venda', function ($request, $response) {
-
     $access = [
         'email' => 'professorramayana@gmail.com',
         'token' => '6C461B67BD034EE8A9B1BA64E40F744D',
@@ -129,7 +126,7 @@ $app->get('/pagseguro_venda', function ($request, $response) {
     $pag_seguro_request = new BrPayments\Requests\PagSeguro;
 
 
-//name, areacode, phone, email
+    //name, areacode, phone, email
     $pag_seguro->customer('', '', '', 'c30724139981788620484@sandbox.pagseguro.com.br');
 //    $pag_seguro->shipping(
 //        1,
@@ -167,29 +164,81 @@ $app->get('/pagseguro_venda', function ($request, $response) {
 
     $url = $pag_seguro_request->getUrlFinal($xml->code, true);
 
-    $this->renderer->render($response, "/user/list_videos.phtml",
+    $this->renderer->render(
+        $response,
+        "/user/list_videos.phtml",
         [
             'xml' => $xml,
             'url' => $url
-        ]);
+        ]
+    );
 });
 
-$app->get('/pagseguro_redir', function ($request, $response, $args) {
-    $PagSeguro = new PagSeguro();
+$app->get('/test', function ($request, $response, $args) {
+    $xmlStr = <<<XML
+<transaction>
+<date>2017-09-01T17:01:23.000-03:00</date>
+<code>E80B8B45-B115-406F-B6E7-276A667AFFA9</code>
+<reference>Ref-59a9bc879ced71.07887179</reference>
+<type>1</type>
+<status>3</status>
+<lastEventDate>2017-09-01T17:09:33.000-03:00</lastEventDate>
+<paymentMethod>
+<type>1</type>
+<code>101</code>
+</paymentMethod>
+<grossAmount>30.00</grossAmount>
+<discountAmount>0.00</discountAmount>
+<creditorFees>
+<installmentFeeAmount>0.00</installmentFeeAmount>
+<intermediationRateAmount>0.40</intermediationRateAmount>
+<intermediationFeeAmount>1.20</intermediationFeeAmount>
+</creditorFees>
+<netAmount>28.40</netAmount>
+<extraAmount>0.00</extraAmount>
+<escrowEndDate>2017-10-01T17:09:33.000-03:00</escrowEndDate>
+<installmentCount>1</installmentCount>
+<itemCount>1</itemCount>
+<items>
+<item>
+<id>1</id>
+<description>Videos Ramayana</description>
+<quantity>1</quantity>
+<amount>30.00</amount>
+</item>
+</items>
+<sender>
+<name>Felipe Joazeiro</name>
+<email>pinho_joazeiro@hotmail.com</email>
+</sender>
+<shipping>
+<address>
+<street>RUA AQUIDABA</street>
+<number>1126</number>
+<complement>Bloco 1 Apartamento 304</complement>
+<district>Méier</district>
+<city>RIO DE JANEIRO</city>
+<state>RJ</state>
+<country>BRA</country>
+<postalCode>20720293</postalCode>
+</address>
+<type>1</type>
+<cost>0.00</cost>
+</shipping>
+<primaryReceiver>
+<publicKey>PUB73613C0F0F1B47B980D60F320CCB0DC7</publicKey>
+</primaryReceiver>
+</transaction>
+XML;
 
-    if (isset($args['transaction_id'])) {
-        $pagamento = $PagSeguro->getStatusByReference($args['id_fat']);
-        $pagamento->codigo_pagseguro = $args['transaction_id'];
-        if ($pagamento->status == 3 || $pagamento->status == 4) {
-            echo 'pagamento confirmado</br>';
-            var_dump($pagamento);
-        } else {
-            echo $PagSeguro->getStatusText($PagSeguro->status);
-        }
-    } else {
-        echo 'nenhum parametro enviado';
-        var_dump($args);
-    }
+
+    $xml = new SimpleXMLElement($xmlStr);
+    echo $xml->lastEventDate . '<br />';
+
+    $lastEvent = date($xml->lastEventDate);
+    $lastEvent = strtotime("+3 months", strtotime($lastEvent)); // returns timestamp
+    $access_expiration_date = date('Y-m-d', $lastEvent);
+    echo $access_expiration_date . '<br />';
 });
 
 
@@ -223,3 +272,4 @@ include_once 'routes/sitios_routes.php';
 include_once 'routes/videos_routes.php';
 include_once 'routes/sobre_routes.php';
 include_once 'routes/user_routes.php';
+include_once 'routes/config_routes.php';
