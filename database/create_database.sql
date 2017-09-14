@@ -150,6 +150,23 @@ CREATE TABLE IF NOT EXISTS `ramayana`.`transactions` (
 ENGINE = InnoDB;
 
 
+
+-- -----------------------------------------------------
+-- Table `ramayana`.`informes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ramayana`.`config` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `key` VARCHAR(255) NOT NULL,
+  `value` VARCHAR(3000) NOT NULL,
+  `description` VARCHAR(3000) NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
