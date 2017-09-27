@@ -1,5 +1,6 @@
 <?php
 include_once __DIR__ . '/../models/Config.php';
+include_once __DIR__ . '/../models/Transacao.php';
 
 
 //Get a list
@@ -48,6 +49,12 @@ $app->post('/admin/config/edit_valor', function ($request, $response, $args) {
         $value = floatval(str_replace(',', '', $parsedBody['value']));
         $config->value = $value;
         $config->save();
+
+        $transactions = \src\models\Transacao::query()->whereNull('is_paid')->get();
+        foreach ($transactions as $transaction) {
+                 $transaction->value = $value;
+                 $transaction->save();
+        }
     }
 
     return $response->withRedirect(BASE_URL . '/admin/config/list');
